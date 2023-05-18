@@ -48,6 +48,7 @@ export async function getDayGames(leagues: string[], day: DateTime) {
 
   const url:string = baseUrl + params.toString()
   const response = await fetch(url)
+
   const responseJson:lolFandomResponse = await response.json()
 
   let result: loadGames[] = [] 
