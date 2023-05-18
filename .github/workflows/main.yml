@@ -5,5 +5,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - run: |
-          ls
-        working-directory: /home
+          git pull
+        working-directory: /home/predbot
