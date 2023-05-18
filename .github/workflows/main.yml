@@ -4,5 +4,6 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: self-hosted
     steps:
-      - run: cd ~/predbot-recode
-      - run: git pull
+      - name: Setup and run tests
+          working-directory: ~/predbot-recode/
+          run: git pull
