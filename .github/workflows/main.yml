@@ -6,4 +6,6 @@ jobs:
     steps:
       - run: |
           git pull
+          npm install
+          npm start
         working-directory: /home/predbot/predbot-recode
