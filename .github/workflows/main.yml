@@ -4,4 +4,6 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: self-hosted
     steps:
-      - run: ls
+      - run: |
+      ls
+      working-directory: /
