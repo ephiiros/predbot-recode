@@ -6,4 +6,4 @@ jobs:
     steps:
       - run: |
           ls
-        working-directory: /usr/predbot
+        working-directory: /home
