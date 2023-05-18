@@ -5,5 +5,5 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Setup and run tests
-          working-directory: ~/predbot-recode/
-          run: git pull
+        working-directory: ~/predbot-recode/
+        run: git pull
