@@ -1,0 +1,101 @@
+import { DateTime } from "luxon";
+
+const baseUrl:string = "https://lol.fandom.com/api.php?";
+
+export interface lolFandomResponse {
+  limits: number,
+  cargoquery: {
+    title: {
+      BestOf: number,
+      "DateTime UTC" : string,
+      "DateTime UTC__precision" : string,
+      MatchId: string,
+      Team1: string,
+      Team2: string
+    }
+  }[]
+}
+
+export interface loadGames {
+  DateTime_UTC: DateTime,
+  Team1: string,
+  Team2: string,
+  BestOf: number
+}
+export async function getDayGames(leagues: string[], day: DateTime) {
+  let leagueQuery = ` AND (MatchId LIKE '${leagues[0]}%'` 
+  if (leagues.length > 1) {
+    for (let i = 1; i < leagues.length; i++) {
+        leagueQuery += `OR MatchId LIKE '${leagues[i]}%'`
+    }
+  }
+  leagueQuery += ")"
+
+  const before = day.set({ hour: 0, minute: 0, second: 0, millisecond: 0})
+  const after = day.plus({days:1})
+  const params = new URLSearchParams({
+    action: "cargoquery",
+    format: "json",
+    origin: "*",
+    limit: "max",
+    tables: "MatchSchedule",
+    fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf",
+    where: `DateTime_UTC BETWEEN '${before.toFormat("yyyy-MM-dd")}'`
+        +` AND '${after.toFormat("yyyy-MM-dd")}'`
+        + leagueQuery,
+    order_by: "DateTime_UTC ASC"
+  });
+
+  const url:string = baseUrl + params.toString()
+  const response = await fetch(url)
+  const responseJson:lolFandomResponse = await response.json()
+
+  let result: loadGames[] = [] 
+  for (var key in responseJson.cargoquery) {
+    result.push({
+      DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[key].title["DateTime UTC"]),
+      Team1: responseJson.cargoquery[key].title.Team1,
+      Team2: responseJson.cargoquery[key].title.Team2,
+      BestOf: responseJson.cargoquery[key].title.BestOf
+    })
+  }
+
+  return result
+}
+
+export async function getNextGame(leagues: string[], date: DateTime) {
+  let leagueQuery = ` AND (MatchId LIKE '${leagues[0]}%'` 
+  if (leagues.length > 1) {
+    for (let i = 1; i < leagues.length; i++) {
+        leagueQuery += `OR MatchId LIKE '${leagues[i]}%'`
+    }
+  }
+  leagueQuery += ")"
+
+  const after = date
+  const params = new URLSearchParams({
+    action: "cargoquery",
+    format: "json",
+    origin: "*",
+    limit: "max",
+    tables: "MatchSchedule",
+    fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf",
+    where: `DateTime_UTC > '${after.toFormat("yyyy-MM-dd")}'`
+        + leagueQuery,
+    order_by: "DateTime_UTC ASC"
+  });
+
+  const url:string = baseUrl + params.toString()
+  const response = await fetch(url)
+  const responseJson:lolFandomResponse = await response.json()
+
+  let result: loadGames 
+  result= {
+    DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
+    Team1: responseJson.cargoquery[0].title.Team1,
+    Team2: responseJson.cargoquery[0].title.Team2,
+    BestOf: responseJson.cargoquery[0].title.BestOf
+  }
+
+  return result
+}
