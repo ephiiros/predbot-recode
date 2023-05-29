@@ -19,7 +19,8 @@ module.exports = {
         }).then(() => {
             
             console.log("[Server] Creating daily schedule")
-            cron.schedule('*/60 * * * * *', () => {
+            // every hour 
+            cron.schedule('*/60 * * * * * *', () => {
                 getServers().then((servers) => {
                     const channelList: TextChannel[] = []
 
