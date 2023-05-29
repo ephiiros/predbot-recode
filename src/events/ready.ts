@@ -20,7 +20,7 @@ module.exports = {
             
             console.log("[Server] Creating daily schedule")
             // every hour 
-            cron.schedule('*/60 * * * * * *', () => {
+            cron.schedule('0 * * * * ', () => {
                 getServers().then((servers) => {
                     const channelList: TextChannel[] = []
 
