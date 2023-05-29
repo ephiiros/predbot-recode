@@ -7,13 +7,32 @@ dotenv.config()
 
 export async function connectToDatabase () {
     console.log("trying to connect")
-    dotenv.config();
-    const client = new MongoClient(process.env.DB_CONN_STRING as string);
-    await client.connect();
+    const client = new MongoClient(process.env.DB_CONN_STRING as string)
+    await client.connect()
     console.log(client)
-    const db = client.db(process.env.DB_NAME);
+    const db = client.db(process.env.DB_NAME)
     console.log(db)
     console.log("connected")
+}
+
+export async function addServer (server: Server) {
+    console.log("adding server")
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const servers = database.collection("servers")
+    const result = await servers.replaceOne(
+        {
+            "id": server.id
+        },
+        {
+            "id": server.id
+        },
+        { 
+            upsert: true
+        }
+    )
+    console.log(result)
 }
 
 export const collections: { games?: Collection } = {}

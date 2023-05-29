@@ -2,9 +2,14 @@ import { SlashCommandBuilder } from "discord.js";
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('ping')
-		.setDescription('Replies with Pong!'),
+		.setName('settings')
+		.setDescription('admin settings'),
 	async execute(interaction:any) {
-		await interaction.reply('Pong!');
+		await interaction.reply(
+			{
+				content: 'settings display + commands to set what go here', 
+				ephemeral: true
+			}
+		);
 	},
 };
