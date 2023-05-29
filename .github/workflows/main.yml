@@ -1,0 +1,11 @@
+name: learn-github-actions
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: self-hosted
+    steps:
+      - run: |
+          git pull
+          npm install
+          npm start
+        working-directory: /home/predbot/predbot-recode
