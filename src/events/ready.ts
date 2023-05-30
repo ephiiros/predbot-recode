@@ -1,5 +1,5 @@
 import { Client, Events, TextChannel } from "discord.js"
-import { addServer, getServers } from "../libs/mongoWrapper"
+import { getServers } from "../libs/mongoWrapper"
 import { DateTime } from "luxon"
 import cron from "node-cron";
 import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
@@ -10,6 +10,7 @@ module.exports = {
     once: true,
     execute(client: Client) {
         getServers().then((servers) => {
+            console.log(servers)
             servers.forEach((server) => {
                 let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
                 helloChannel.send("hello ! currently in " + servers.length + " servers!")
