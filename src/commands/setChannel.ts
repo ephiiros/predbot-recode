@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "discord.js";
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('Set Channel')
+		.setName('setchannel')
 		.setDescription('sets channel for bot'),
 	async execute(interaction:any) {
 		await interaction.reply(
