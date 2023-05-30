@@ -19,15 +19,13 @@ module.exports = {
         }).then(() => {
             
             console.log("[Server] Creating daily schedule")
-            // every hour 
-            cron.schedule('0 * * * * ', () => {
+            // every 24 hours
+            cron.schedule('0 0 * * * ', () => {
                 getServers().then((servers) => {
                     const channelList: TextChannel[] = []
 
                     servers.forEach((server) => {
-                        console.log(server.id)
                         channelList.push(client.channels.cache.get(server.channel) as TextChannel) 
-                        addServer(server)
                     });
 
                     channelList.forEach((channel: TextChannel) => {
