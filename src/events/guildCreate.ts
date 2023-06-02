@@ -1,6 +1,7 @@
 import { TextChannel } from "discord.js";
 import { GuildMember } from "discord.js";
 import { Events, Guild } from "discord.js";
+import { Server, addServer } from "../libs/mongoWrapper";
 
 
 module.exports = { 
@@ -24,7 +25,17 @@ module.exports = {
             }
         });
 
-        // adds server to server db
+        const server:Server = {
+            "id": guild.id,
+            "channel": "0",
+            "messages": [],
+            "timezone": "UTC",
+            "leagues": []
+        }
+
+        addServer(server)
+
+        // adds server to server db if not already there
         // sends message ? about picking channel ? 
         // updates server db with channel
     }

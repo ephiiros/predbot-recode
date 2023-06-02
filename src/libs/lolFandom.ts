@@ -17,6 +17,7 @@ export interface lolFandomResponse {
 }
 
 export interface loadGames {
+  MatchId: string,
   DateTime_UTC: DateTime,
   Team1: string,
   Team2: string,
@@ -40,7 +41,7 @@ export async function getDayGames(leagues: string[], day: DateTime) {
     limit: "max",
     tables: "MatchSchedule",
     fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf",
-    where: `DateTime_UTC BETWEEN '${before.toFormat("yyyy-MM-dd")}'`
+    where: `DateTime_UTC BETWEEN '${before.toFormat("yyyy-MM-dd HH:mm:ss")}'`
         +` AND '${after.toFormat("yyyy-MM-dd")}'`
         + leagueQuery,
     order_by: "DateTime_UTC ASC"
@@ -54,6 +55,7 @@ export async function getDayGames(leagues: string[], day: DateTime) {
   let result: loadGames[] = [] 
   for (var key in responseJson.cargoquery) {
     result.push({
+      MatchId: responseJson.cargoquery[key].title.MatchId,
       DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[key].title["DateTime UTC"]),
       Team1: responseJson.cargoquery[key].title.Team1,
       Team2: responseJson.cargoquery[key].title.Team2,
@@ -92,6 +94,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
 
   let result: loadGames 
   result= {
+    MatchId: responseJson.cargoquery[0].title.MatchId,
     DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
     Team1: responseJson.cargoquery[0].title.Team1,
     Team2: responseJson.cargoquery[0].title.Team2,

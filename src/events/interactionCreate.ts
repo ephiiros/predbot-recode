@@ -3,6 +3,7 @@ import { Events, Interaction } from "discord.js";
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction: Interaction) {
+		console.log("creating interaction")
         if (!interaction.isChatInputCommand()) return;
 
         //@ts-ignore

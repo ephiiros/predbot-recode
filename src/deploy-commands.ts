@@ -3,13 +3,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import dotenv from "dotenv";
 
-dotenv.config({path:"../.env"})
+dotenv.config()
 
 const clientId = process.env.DISCORD_CLIENT_ID as string
 const guildId = "859795735360307210"
 const token = process.env.DISCORD_TOKEN as string
 
 console.log(token)
+console.log("test")
 
 const commands = [];
 // Grab all the command files from the commands directory you created earlier

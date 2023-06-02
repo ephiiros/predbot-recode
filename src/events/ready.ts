@@ -13,7 +13,8 @@ module.exports = {
             console.log(servers)
             servers.forEach((server) => {
                 let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
-                helloChannel.send("hello ! currently in " + servers.length + " servers!")
+                helloChannel.send("hello ! currently in " + servers.length + " servers!\n" +
+                "message ephiros#1111 for help")
                 console.log("[" + server.id +"] Sent restart message")
             })
             return servers
@@ -23,28 +24,34 @@ module.exports = {
             // every 24 hours
             cron.schedule('0 0 * * * ', () => {
                 getServers().then((servers) => {
-                    const channelList: TextChannel[] = []
-
                     servers.forEach((server) => {
-                        channelList.push(client.channels.cache.get(server.channel) as TextChannel) 
-                    });
-
-                    channelList.forEach((channel: TextChannel) => {
+                        console.log("["+ server.id +"] Scheduled message")
+                        const channel = client.channels.cache.get(server.channel) as TextChannel
                         const today = DateTime.now()
                         //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
-                        const todayGames = getDayGames(["LEC"], today)
+                        const todayGames = getDayGames(server.leagues, today)
                         .then((response: loadGames[]) => {
                             let todayString = ""
+                            let newResponse:loadGames[] = []
                             response.forEach(game => {
-                                todayString += 
-                                game.DateTime_UTC.toFormat("HH:mm") + " " +
-                                game.Team1 + " vs " + game.Team2 + "\n"
+                                if (game.DateTime_UTC.millisecond < today.millisecond) {
+                                    todayString += 
+                                    "~~" +
+                                    game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                    game.Team1 + " vs " + game.Team2 + 
+                                    "~~\n" 
+                                } else {
+                                    todayString += 
+                                    game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                    game.Team1 + " vs " + game.Team2 + "\n"
+                                    newResponse.push(game)
+                                }
                             })
-                            return [todayString, response]
+                            return [todayString, newResponse]
                         })
 
-                        const tomorrowGames = getDayGames(["LEC"], today.plus({days:1}))
+                        const tomorrowGames = getDayGames(server.leagues, today.plus({days:1}))
                         .then((response: loadGames[]) => {
                             let tomorrowString = ""
                             response.forEach(game => {
@@ -55,7 +62,7 @@ module.exports = {
                             return tomorrowString
                         })
 
-                        const nextGame = getNextGame(["LEC"], today)
+                        const nextGame = getNextGame(server.leagues, today)
                         .then((response: loadGames) => {
                             let nextGameString = ""
                             nextGameString += 
