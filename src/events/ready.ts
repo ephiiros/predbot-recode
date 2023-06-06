@@ -28,6 +28,7 @@ module.exports = {
                         console.log("["+ server.id +"] Scheduled message")
                         const channel = client.channels.cache.get(server.channel) as TextChannel
                         const today = DateTime.now()
+                        today.set({hour: 3}) //test
                         //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                         const todayGames = getDayGames(server.leagues, today)
