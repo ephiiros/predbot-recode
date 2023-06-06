@@ -22,7 +22,7 @@ module.exports = {
             
             console.log("[Server] Creating daily schedule")
             // every 24 hours
-            cron.schedule('0 0 * * * ', () => {
+            cron.schedule('* * * * * ', () => {
                 getServers().then((servers) => {
                     servers.forEach((server) => {
                         console.log("["+ server.id +"] Scheduled message")
@@ -38,11 +38,13 @@ module.exports = {
                                 if (game.DateTime_UTC.millisecond < today.millisecond) {
                                     todayString += 
                                     "~~" +
+                                    game.MatchId + " " + 
                                     game.DateTime_UTC.toFormat("HH:mm") + " " +
                                     game.Team1 + " vs " + game.Team2 + 
                                     "~~\n" 
                                 } else {
                                     todayString += 
+                                    game.MatchId + " " + 
                                     game.DateTime_UTC.toFormat("HH:mm") + " " +
                                     game.Team1 + " vs " + game.Team2 + "\n"
                                     newResponse.push(game)
