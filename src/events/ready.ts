@@ -35,7 +35,7 @@ module.exports = {
                             let todayString = ""
                             let newResponse:loadGames[] = []
                             response.forEach(game => {
-                                if (game.DateTime_UTC.millisecond < today.millisecond) {
+                                if (game.DateTime_UTC < today) {
                                     todayString += 
                                     "~~" +
                                     game.MatchId + " " + 
