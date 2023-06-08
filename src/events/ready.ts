@@ -89,6 +89,12 @@ module.exports = {
                             // send for the day but lock individually
 
                             if (values[0][1].length > 0) {
+                                const bah:loadGames[] = values[0][1] as loadGames[]
+                                bah.forEach(item => {
+                                    console.log(item)
+                                    
+                                });
+                                    
                                 setTimeout(sendVoteMessages, 2000, values[0][1], channel, today)
                             }
 
