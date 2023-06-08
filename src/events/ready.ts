@@ -21,8 +21,9 @@ module.exports = {
         }).then(() => {
             
             console.log("[Server] Creating daily schedule")
-            // every 24 hours
-            cron.schedule('* * * * * ', () => {
+            // every 24 hours 0 0 * * * 
+            // every minute * * * * * 
+            cron.schedule('0 0 * * * ', () => {
                 getServers().then((servers) => {
                     servers.forEach((server) => {
                         console.log("["+ server.id +"] Scheduled message")
