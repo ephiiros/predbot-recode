@@ -76,13 +76,10 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         let messageList:Message[] = []
 
         for (const msgId of match.ids) {
-            console.log(msgId)
             //console.log(await channel.messages.fetch(msgId))
             messageList.push(await channel.messages.fetch(msgId))
-            console.log(messageList)
         }
 
-        console.log(messageList)
 
         // title card
         await messageList[0].edit(messageList[0].cleanContent + " LOCKED !!") 
