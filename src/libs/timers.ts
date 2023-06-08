@@ -49,7 +49,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeBo3(bo3Message, channel.guildId)
 
-                console.log("millis to game start " + game.DateTime_UTC.diffNow().milliseconds)
+                console.log("millis to game start " + game.DateTime_UTC.diff(today).milliseconds)
                 setTimeout(lockVotes, 2000, bo3Message.matchId, channel)
 
                 break
