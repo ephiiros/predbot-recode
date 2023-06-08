@@ -49,8 +49,10 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeBo3(bo3Message, channel.guildId)
 
-                console.log("millis to game start " + game.DateTime_UTC.diff(today).milliseconds)
-                setTimeout(lockVotes, 2000, bo3Message.matchId, channel)
+                setTimeout(lockVotes, 
+                    game.DateTime_UTC.diff(today).milliseconds, 
+                    bo3Message.matchId, 
+                    channel)
 
                 break
             case 5:
@@ -79,7 +81,6 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
             //console.log(await channel.messages.fetch(msgId))
             messageList.push(await channel.messages.fetch(msgId))
         }
-
 
         // title card
         await messageList[0].edit(messageList[0].cleanContent + " LOCKED !!") 
