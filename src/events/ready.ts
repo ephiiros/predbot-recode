@@ -88,14 +88,7 @@ module.exports = {
 
                             // send for the day but lock individually
 
-                            const todayResponse:loadGames[] =  values[0][1] as loadGames[]
-                            if (todayResponse.length > 0) {
-                                todayResponse.forEach(item => {
-                                    console.log(item.MatchId)
-                                    console.log(item.DateTime_UTC)
-                                });
-                                    
-                                    
+                            if (values[0][1].length > 0) {
                                 setTimeout(sendVoteMessages, 2000, values[0][1], channel, today)
                             }
 
