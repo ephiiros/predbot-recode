@@ -96,8 +96,8 @@ module.exports = {
 
                                 channel.send(dailyMessage)
 
-                            }
-                        })
+                            })
+                        }
                     })
                 })
             })
