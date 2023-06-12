@@ -21,11 +21,10 @@ module.exports = {
             })
             return servers
         }).then(() => {
-            
             console.log("[Server] Creating daily schedule")
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            cron.schedule('0 0 * * * ', () => {
+            cron.schedule('* * * * * ', () => {
                 getServers().then((servers) => {
                     servers.forEach((server) => {
                         if (server.channel != null) {
