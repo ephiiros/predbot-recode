@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { updateServerChannel } from "../libs/mongoWrapper";
+import { updateServerChannel, updateServerLeague } from "../libs/mongoWrapper";
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,6 +18,6 @@ module.exports = {
 				ephemeral: true
 			}
 		);
-		updateServerChannel(interaction.guildId, interaction.options.getChannel('channel'))
+		updateServerLeague(interaction.guildId, leaguesArray)
 	},
 };

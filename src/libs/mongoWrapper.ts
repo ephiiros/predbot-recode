@@ -54,9 +54,6 @@ export async function updateServerChannel (serverId:string, channelId:TextChanne
     const database = client.db("predbot")
     const servers = database.collection("servers")
 
-    console.log(serverId)
-    console.log(channelId.id)
-
     await servers.updateOne(
         {
             "id": { $eq: serverId }
@@ -64,6 +61,24 @@ export async function updateServerChannel (serverId:string, channelId:TextChanne
         {
             $set: {
                 "channel": channelId.id
+            }
+        }
+    )
+}
+
+export async function updateServerLeague (serverId: string, leagues: string[]) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const servers = database.collection("servers")
+
+    await servers.updateOne(
+        {
+            "id": { $eq: serverId }
+        },
+        {
+            $set: {
+                "leagues": leagues
             }
         }
     )
