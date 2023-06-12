@@ -12,10 +12,12 @@ module.exports = {
         getServers().then((servers) => {
             console.log(servers)
             servers.forEach((server) => {
-                let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
-                helloChannel.send("hello ! currently in " + servers.length + " servers!\n" +
-                "message ephiros#1111 for help")
-                console.log("[" + server.id +"] Sent restart message")
+                if (server.channel != null) {
+                    let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
+                    helloChannel.send("hello ! currently in " + servers.length + " servers!\n" +
+                    "message ephiros#1111 for help")
+                    console.log("[" + server.id +"] Sent restart message")
+                }
             })
             return servers
         }).then(() => {
