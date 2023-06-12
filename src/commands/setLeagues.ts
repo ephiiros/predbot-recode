@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { updateServerChannel, updateServerLeague } from "../libs/mongoWrapper";
+import { updateServerLeague } from "../libs/mongoWrapper";
 
 module.exports = {
 	data: new SlashCommandBuilder()
