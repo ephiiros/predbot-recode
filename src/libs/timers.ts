@@ -160,7 +160,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         lockMatch(match, channel.guildId)
 
         setTimeout(countPoints, 
-            2000 //2 seconds
+            2000, //2 seconds
             match.matchId,
             channel)
 
