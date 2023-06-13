@@ -10,12 +10,11 @@ module.exports = {
     once: true,
     execute(client: Client) {
         getServers().then((servers) => {
-            console.log(servers)
             servers.forEach((server) => {
                 if (server.channel != null) {
                     let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
-                    helloChannel.send("hello ! currently in " + servers.length + " servers!\n" +
-                    "message ephiros#1111 for help")
+                    helloChannel.send("Bot Restarted\n" +
+                    "message @ephiros for help")
                     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + server.id +"] Sent restart message")
                 }
             })
@@ -24,18 +23,18 @@ module.exports = {
             console.log("[" + DateTime.now().toFormat("HH:mm") + "] [Server] Creating daily schedule")
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            cron.schedule('*/4 * * * * ', () => {
+            cron.schedule('0 0 * * * ', () => {
                 getServers().then((servers) => {
                     servers.forEach((server) => {
                         if (server.channel != null) {
-                            console.log("["+ server.id +"] Scheduled message")
+                            console.log("["+ server.id +"] Scheduled Message")
                             const channel = client.channels.cache.get(server.channel) as TextChannel
-                            const today = DateTime.now().set({hour: 8, minute: 58}) //test
+                            const today = DateTime.now() //.set({hour: 8, minute: 58}) //test
                             //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                             if (server.leagues == null) {
                                 // error
-                                console.log("no leagues in server")
+                                console.log("[" + server.id + "] no leagues in server")
                             } else {
                                 const todayGames = getDayGames(server.leagues, today)
                                 .then((response: loadGames[]) => {
@@ -45,14 +44,12 @@ module.exports = {
                                         if (game.DateTime_UTC < today) {
                                             todayString += 
                                             "~~" +
-                                            game.MatchId + " " + 
-                                            game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                            game.DateTime_UTC.toFormat("HH:mm") + " || " +
                                             game.Team1 + " vs " + game.Team2 + 
                                             "~~\n" 
                                         } else {
                                             todayString += 
-                                            game.MatchId + " " + 
-                                            game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                            game.DateTime_UTC.toFormat("HH:mm") + " || " +
                                             game.Team1 + " vs " + game.Team2 + "\n"
                                             newResponse.push(game)
                                         }
@@ -65,7 +62,7 @@ module.exports = {
                                     let tomorrowString = ""
                                     response.forEach(game => {
                                         tomorrowString +=
-                                        game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                        game.DateTime_UTC.toFormat("HH:mm") + " || " +
                                         game.Team1 + " vs " + game.Team2 + "\n"
                                     })
                                     return tomorrowString
@@ -75,7 +72,7 @@ module.exports = {
                                 .then((response: loadGames) => {
                                     let nextGameString = ""
                                     nextGameString += 
-                                    response.DateTime_UTC.toFormat("HH:mm") + " " + 
+                                    response.DateTime_UTC.toFormat("HH:mm") + " || " + 
                                     response.Team1 + " vs " + response.Team2 + "\n"
 
                                     return nextGameString

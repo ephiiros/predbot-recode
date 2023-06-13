@@ -5,15 +5,11 @@ import { Bo3Message, commitVote, findMatchMessage, lockMatch, writeBo3 } from ".
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
-    const timeDiff = games[0].DateTime_UTC.diff(today)
-    console.log("[" + channel.guildId + "] Time to next game " + timeDiff.toObject().milliseconds)
-
-    //TODO: dependign on bo1/3/5
+    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] sendVoteMessages")
 
     channel.send("**VOTEVOTEVOTEVOTEVOTE**")
 
     for (const game of games) {
-        console.log(game.BestOf)
         switch(Number(game.BestOf)) {
             case 1:
                 break
@@ -29,7 +25,11 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 }
                 bo3Message.matchId = game.MatchId
 
-                const bo3title = await channel.send("bo3" + game.Team1 + " vs " + game.Team2)
+                const bo3title = await channel.send(
+                    game.DateTime_UTC.toFormat("HH:mm") +
+                    game.Team1 + 
+                    " vs " + 
+                    game.Team2)
                 bo3Message.ids.push(bo3title.id)
 
                 const msg20 = await channel.send("2 - 0")
@@ -63,7 +63,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 }
 
 export async function lockVotes(matchId: string, channel:TextChannel ) {
-    console.log("lock votes " + matchId  + " " + channel.guildId)
+    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "]" + "lockVotes")
 
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
 
@@ -169,24 +169,15 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 }
 
 export async function countPoints (matchId:string, channel: TextChannel) {
-    console.log("countPoints")
+    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId +  "] countPoints")
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
-    console.log("match message found")
-
     const matchResult = await getMatchResult(match.matchId)
-    console.log("match result")
-    console.log(matchResult)
 
     if (matchResult.Winner != null) {
         switch(matchResult.BestOf) {
             case '3':
-                console.log("switch case 3")
                 // score matters 
                 const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
-                console.log("scorestring")
-                console.log(scoreString)
-
-                // has to go through all of them anyway but has to add different amount of points 
 
                 //@ts-ignore
                 let allVotes = []
@@ -248,24 +239,4 @@ export async function countPoints (matchId:string, channel: TextChannel) {
         }
 
     }
-
-    // check for result
-
-    /*
-    users coll 
-    [
-        user: {
-            id: 123
-            history: [
-                vote: {
-                    serverId: 123
-                    match: xxx
-                    vote: "1/2 // 20/21/12/20 // 30/31...etc"
-                    points: 1
-                }
-            ]
-        }
-    ]
-    */
-
 }

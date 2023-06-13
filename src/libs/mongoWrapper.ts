@@ -154,6 +154,7 @@ export async function lockMatch(match:Bo3Message, serverId:string) {
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
+    //@ts-ignore
     const result = await messages.replaceOne(
         {
             "serverId": serverId,
@@ -170,7 +171,6 @@ export async function lockMatch(match:Bo3Message, serverId:string) {
             "vote02": match.vote02,
         }
     )
-    console.log(result)
 }
 
 export async function findMatchMessage(matchId: string, serverId: string) {
@@ -186,7 +186,6 @@ export async function findMatchMessage(matchId: string, serverId: string) {
             "matchId": matchId
         }
     )
-
 
     return result
 }
