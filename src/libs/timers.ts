@@ -1,6 +1,6 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
-import { loadGames } from "./lolFandom";
+import { getMatchResult, loadGames } from "./lolFandom";
 import { Bo3Message, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
 
 
@@ -159,5 +159,36 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
         lockMatch(match, channel.guildId)
 
+        setTimeout(countPoints, 
+            2000 //2 seconds
+            match.matchId,
+            channel)
+
     }
+}
+
+export async function countPoints (matchId:string, channel: TextChannel) {
+    const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
+
+    getMatchResult(match.matchId)
+
+    // check for result
+
+    /*
+    users coll 
+    [
+        user: {
+            id: 123
+            history: [
+                vote: {
+                    serverId: 123
+                    match: xxx
+                    vote: "1/2 // 20/21/12/20 // 30/31...etc"
+                    points: 1
+                }
+            ]
+        }
+    ]
+    */
+
 }
