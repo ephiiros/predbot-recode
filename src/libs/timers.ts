@@ -94,6 +94,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
                 return user.id
             }
         })
+        //@ts-ignore
         match.vote20 = ids20
             
         // 2-1
