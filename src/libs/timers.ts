@@ -159,6 +159,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
         lockMatch(match, channel.guildId)
 
+
         setTimeout(countPoints, 
             2000, //2 seconds
             match.matchId,
@@ -171,12 +172,16 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
 
     const matchResult = await getMatchResult(match.matchId)
+    console.log("match result")
+    console.log(matchResult)
 
     if (matchResult.Winner != null) {
         switch(matchResult.BestOf) {
             case 3:
+                console.log("switch case 3")
                 // score matters 
-                const scoreString = matchResult.Team1Score + matchResult.Team2Score
+                const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
+                console.log("scorestring")
                 console.log(scoreString)
 
                 // has to go through all of them anyway but has to add different amount of points 
