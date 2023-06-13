@@ -85,18 +85,21 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         // title card
         await messageList[0].edit(messageList[0].cleanContent + " LOCKED !!") 
         // 2-0
-        console.log()
         await messageList[1].edit(messageList[1].cleanContent + " LOCKED !!"
          + messageList[1].reactions.resolve("✅")?.count) 
+        console.log(messageList[1].reactions.resolve("✅")?.users)
         // 2-1
         await messageList[2].edit(messageList[2].cleanContent + " LOCKED !!"
          + messageList[2].reactions.resolve("✅")?.count) 
+        console.log(messageList[2].reactions.resolve("✅")?.users)
         // 1-2
         await messageList[3].edit(messageList[3].cleanContent + " LOCKED !!"
          + messageList[3].reactions.resolve("✅")?.count) 
+        console.log(messageList[3].reactions.resolve("✅")?.users)
         // 0-2
         await messageList[4].edit(messageList[4].cleanContent + " LOCKED !!" 
          + messageList[4].reactions.resolve("✅")?.count) 
+        console.log(messageList[4].reactions.resolve("✅")?.users)
 
         await messageList[0].reactions.removeAll()
         await messageList[1].reactions.removeAll()

@@ -84,7 +84,7 @@ module.exports = {
                                 Promise.all([todayGames, tomorrowGames, nextGame]).then((values) => {
                                     let dailyMessage = 
                                         "**CURRENT DATE AND TIME** " +
-                                        `${DateTime.now().toFormat("d LLLL y HH:mm ZZZZ")}\n` + 
+                                        `${today.toFormat("d LLLL y HH:mm ZZZZ")}\n` + 
                                         "**GAMES TODAY**\n"
 
                                     dailyMessage += values[0][0]
