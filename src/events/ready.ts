@@ -24,13 +24,13 @@ module.exports = {
             console.log("[Server] Creating daily schedule")
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            cron.schedule('* * * * * ', () => {
+            cron.schedule('0 0 * * * ', () => {
                 getServers().then((servers) => {
                     servers.forEach((server) => {
                         if (server.channel != null) {
                             console.log("["+ server.id +"] Scheduled message")
                             const channel = client.channels.cache.get(server.channel) as TextChannel
-                            const today = DateTime.now().set({hour: 7}) //test
+                            const today = DateTime.now().set({hour: 8, minute: 58}) //test
                             //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                             if (server.leagues == null) {

@@ -49,6 +49,8 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeBo3(bo3Message, channel.guildId)
 
+                console.log(game.DateTime_UTC.diff(today).milliseconds)
+
                 setTimeout(lockVotes, 
                     game.DateTime_UTC.diff(today).milliseconds, 
                     bo3Message.matchId, 
