@@ -83,16 +83,15 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         await messageList[0].edit(messageList[0].cleanContent + " LOCKED !!") 
         // 2-0
         await messageList[1].edit(messageList[1].cleanContent + " LOCKED !!"
-         + messageList[1].reactions.resolve("✅")?.count) 
+        + messageList[1].reactions.resolve("✅")?.count) 
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
 
         //@ts-ignore
-        const ids20 = users20.map(user => {
+        const ids20 = [] 
+        //@ts-ignore
+        users20.forEach(user => {
             if (!user.bot) {
-                console.log("user")
-                console.log(user.id)
-
-                return user.id
+                ids20.push(user.id)
             }
         })
         //@ts-ignore
@@ -100,19 +99,54 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
             
         // 2-1
         await messageList[2].edit(messageList[2].cleanContent + " LOCKED !!"
-         + messageList[2].reactions.resolve("✅")?.count) 
+        + messageList[2].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
+
+        //@ts-ignore
+        const ids21 = [] 
+        //@ts-ignore
+        users21.forEach(user => {
+            if (!user.bot) {
+                ids21.push(user.id)
+            }
+        })
+        //@ts-ignore
+        match.vote21 = ids21
+
         // 1-2
         await messageList[3].edit(messageList[3].cleanContent + " LOCKED !!"
-         + messageList[3].reactions.resolve("✅")?.count) 
+        + messageList[3].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
+
+        //@ts-ignore
+        const ids12 = [] 
+        //@ts-ignore
+        users12.forEach(user => {
+            if (!user.bot) {
+                ids12.push(user.id)
+            }
+        })
+        //@ts-ignore
+        match.vote12 = ids12
+
         // 0-2
         await messageList[4].edit(messageList[4].cleanContent + " LOCKED !!" 
-         + messageList[4].reactions.resolve("✅")?.count) 
+        + messageList[4].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
+
+        //@ts-ignore
+        const ids02 = [] 
+        //@ts-ignore
+        users02.forEach(user => {
+            if (!user.bot) {
+                ids02.push(user.id)
+            }
+        })
+        //@ts-ignore
+        match.vote02 = ids02
 
         await messageList[0].reactions.removeAll()
         await messageList[1].reactions.removeAll()
@@ -120,13 +154,10 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         await messageList[3].reactions.removeAll()
         await messageList[4].reactions.removeAll()
 
+
+        // TODO: duplicate voting removal ? here or after adding points
+
         lockMatch(match, channel.guildId)
 
     }
-
-
-
-
-    // update message
-    
-    }
+}

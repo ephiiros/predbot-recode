@@ -161,7 +161,13 @@ export async function lockMatch(match:Bo3Message, serverId:string) {
 
         },
         {
-            match
+            "serverId": serverId,
+            "matchId": match.matchId,
+            "ids": match.ids,
+            "vote20": match.vote20,
+            "vote21": match.vote21,
+            "vote12": match.vote12,
+            "vote02": match.vote02,
         }
     )
     console.log(result)
