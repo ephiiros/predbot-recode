@@ -20,6 +20,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
             case 3: 
                 let bo3Message: Bo3Message = {
                     matchId: "",
+                    serverId: channel.guildId,
                     ids: [],
                     vote20: [],
                     vote21: [],
