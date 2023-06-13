@@ -132,13 +132,16 @@ export async function writeBo3(bo3Message: Bo3Message, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
-    const servers = database.collection("servers")
+    const servers = database.collection("messages")
 
-    const result = await servers.updateOne({
-        "id": { $eq: serverId }
-    },
-    {
-        $push: { "messages": bo3Message}
+    const result = await servers.insertOne({
+        "serverId": serverId,
+        "matchId": bo3Message.matchId,
+        "ids": bo3Message.ids,
+        "vote20": bo3Message.vote20,
+        "vote21": bo3Message.vote21,
+        "vote12": bo3Message.vote12,
+        "vote02": bo3Message.vote02
     })
 
     if (result) {}
