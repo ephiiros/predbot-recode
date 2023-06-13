@@ -16,7 +16,7 @@ module.exports = {
                     let helloChannel = (client.channels.cache.get(server.channel) as TextChannel) 
                     helloChannel.send("hello ! currently in " + servers.length + " servers!\n" +
                     "message ephiros#1111 for help")
-                    console.log("[" + server.id +"] Sent restart message")
+                    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + server.id +"] Sent restart message")
                 }
             })
             return servers

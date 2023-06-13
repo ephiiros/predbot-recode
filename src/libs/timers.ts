@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { loadGames } from "./lolFandom";
-import { Bo3Message, findMatchMessage, writeBo3 } from "./mongoWrapper";
+import { Bo3Message, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -86,11 +86,15 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
 
         //@ts-ignore
-        const ids20 = users20.map(users20 => {
-            console.log("user")
-            console.log(users20.id)
-            return users20.id
+        const ids20 = users20.map(user => {
+            if (!user.bot) {
+                console.log("user")
+                console.log(user.id)
+
+                return user.id
+            }
         })
+        match.vote20 = ids20
             
         // 2-1
         await messageList[2].edit(messageList[2].cleanContent + " LOCKED !!"
@@ -113,6 +117,8 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         await messageList[2].reactions.removeAll()
         await messageList[3].reactions.removeAll()
         await messageList[4].reactions.removeAll()
+
+        lockMatch(match, channel.guildId)
 
     }
 

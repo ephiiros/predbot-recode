@@ -28,6 +28,7 @@ export interface Bo1Message {
 
 export interface Bo3Message {
     matchId: string,
+    serverId: string,
     ids: string[],
     vote20: string[],
     vote21: string[],
@@ -147,13 +148,22 @@ export async function writeBo3(bo3Message: Bo3Message, serverId: string) {
     if (result) {}
 }
 
-export async function writeVotes(message:Message) {
-    const onePromise = message.reactions.cache.get('1️⃣')?.users.fetch()
-    const twoPromise = message.reactions.cache.get('2️⃣')?.users.fetch()
+export async function lockMatch(match:Bo3Message, serverId:string) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const messages = database.collection("messages")
 
-    Promise.all([onePromise, twoPromise]).then((values)=>{
-        values
-    })
+    const result = await messages.replaceOne(
+        {
+            "serverId": serverId,
+            "matchId": match.matchId
+
+        },
+        {
+            match
+        }
+    )
 }
 
 export async function findMatchMessage(matchId: string, serverId: string) {
