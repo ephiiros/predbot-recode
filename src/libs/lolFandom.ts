@@ -134,6 +134,8 @@ export async function getMatchResult(matchId: string) {
     //@ts-ignore
     Team2Score: responseJson.cargoquery[0].title.Team2Score,
   }
+  
+  console.log("done match result")
 
   return result
 }

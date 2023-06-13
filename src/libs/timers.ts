@@ -169,6 +169,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 }
 
 export async function countPoints (matchId:string, channel: TextChannel) {
+    console.log("countPoints")
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
 
     const matchResult = await getMatchResult(match.matchId)
