@@ -132,9 +132,9 @@ export async function writeBo3(bo3Message: Bo3Message, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
-    const servers = database.collection("messages")
+    const messages = database.collection("messages")
 
-    const result = await servers.insertOne({
+    const result = await messages.insertOne({
         "serverId": serverId,
         "matchId": bo3Message.matchId,
         "ids": bo3Message.ids,
@@ -160,21 +160,16 @@ export async function findMatchMessage(matchId: string, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
-    const servers = database.collection("servers")
+    const messages = database.collection("messages")
 
-    const result:Server = await servers.findOne(
+
+    const result = await messages.findOne(
         {
-            id: serverId,
+            "serverId": serverId,
+            "matchId": matchId
         }
-    ) as unknown as Server
+    )
 
-    let out = null
 
-    result.messages.forEach(message => {
-        if (message.matchId == matchId) {
-            out = message
-        }
-    });
-
-    return out
+    return result
 }
