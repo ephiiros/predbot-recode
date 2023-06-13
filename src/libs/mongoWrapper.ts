@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import { MongoClient, Collection } from "mongodb";
-import { Message, TextChannel} from "discord.js";
+import { TextChannel} from "discord.js";
 
 dotenv.config()
 
