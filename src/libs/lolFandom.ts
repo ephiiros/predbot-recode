@@ -6,7 +6,7 @@ export interface lolFandomResponse {
   limits: number,
   cargoquery: {
     title: {
-      BestOf: number,
+      BestOf: string,
       "DateTime UTC" : string,
       "DateTime UTC__precision" : string,
       MatchId: string,
