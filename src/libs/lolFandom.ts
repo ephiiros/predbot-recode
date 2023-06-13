@@ -106,7 +106,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
 
 export async function getMatchResult(matchId: string) {
   console.log("get match result")
-  consol.log(matchId)
+  console.log(matchId)
   const params = new URLSearchParams({
     action: "cargoquery",
     format: "json",
