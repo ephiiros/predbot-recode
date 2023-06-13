@@ -121,8 +121,6 @@ export async function getMatchResult(matchId: string) {
   const response = await fetch(url)
   const responseJson:lolFandomResponse = await response.json()
 
-  //@ts-ignore
-  console.log(responseJson)
   let result = {
     MatchId: responseJson.cargoquery[0].title.MatchId,
     DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
@@ -130,9 +128,12 @@ export async function getMatchResult(matchId: string) {
     Team2: responseJson.cargoquery[0].title.Team2,
     BestOf: responseJson.cargoquery[0].title.BestOf,
     //@ts-ignore
-    Winner: responseJson.cargoquery[0].title.Winner
+    Winner: responseJson.cargoquery[0].title.Winner,
+    //@ts-ignore
+    Team1Score: responseJson.cargoquery[0].title.Team1Score,
+    //@ts-ignore
+    Team2Score: responseJson.cargoquery[0].title.Team2Score,
   }
 
-  console.log(result)
-
+  return result
 }

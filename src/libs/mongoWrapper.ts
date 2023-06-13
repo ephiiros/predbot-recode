@@ -190,3 +190,22 @@ export async function findMatchMessage(matchId: string, serverId: string) {
 
     return result
 }
+
+export async function commitVote(userId:string, vote:Object) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const users = database.collection("users")
+
+    users.updateOne(
+        {
+            "id": userId
+        },
+        {
+            $push: { history: vote }
+        },
+        {
+            upsert: true
+        }
+    )
+}

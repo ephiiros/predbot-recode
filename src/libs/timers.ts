@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo3Message, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
+import { Bo3Message, commitVote, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -170,7 +170,77 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 export async function countPoints (matchId:string, channel: TextChannel) {
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
 
-    getMatchResult(match.matchId)
+    const matchResult = await getMatchResult(match.matchId)
+
+    if (matchResult.Winner != null) {
+        switch(matchResult.BestOf) {
+            case 3:
+                // score matters 
+                const scoreString = matchResult.Team1Score + matchResult.Team2Score
+                console.log(scoreString)
+
+                // has to go through all of them anyway but has to add different amount of points 
+
+                //@ts-ignore
+                let allVotes = []
+                //@ts-ignore
+                allVotes = allVotes.concat(match.vote20)
+                //@ts-ignore
+                allVotes = allVotes.concat(match.vote21)
+                //@ts-ignore
+                allVotes = allVotes.concat(match.vote12)
+                //@ts-ignore
+                allVotes = allVotes.concat(match.vote02)
+
+                const allSet = new Set(allVotes)
+
+                //@ts-ignore
+                const illegalIds = []
+                const userCounts = {}
+                allVotes.forEach(userId => {
+                    //@ts-ignore
+                    userCounts[userId] = (userCounts[userId] || 0) + 1;
+                });
+
+                for (let key in userCounts) {
+                    //@ts-ignore
+                    if (userCounts[key] > 1) {
+                        illegalIds.push(key)
+                    }
+                }
+
+                allSet.forEach(userId => {
+                    //@ts-ignore
+                    if (!illegalIds.includes(userId)) {
+                        let vote = ""
+                        let points = 0
+                        if (match.vote20.includes(userId)) { vote = "20"
+                            if (scoreString == "20") { points = 3}
+                            else if (scoreString == "21") { points = 1}
+                        } else if (match.vote21.includes(userId)) { vote = "21"
+                            if (scoreString == "21") { points = 3}
+                            else if (scoreString == "20") { points = 1}
+                        } else if (match.vote12.includes(userId)) { vote = "12"
+                            if (scoreString == "12") { points = 3}
+                            else if (scoreString == "21") { points = 1}
+                        } else if (match.vote02.includes(userId)) { vote = "02"
+                            if (scoreString == "02") { points = 3}
+                            else if (scoreString == "12") { points = 1}
+                        }
+                        commitVote(userId,
+                            {
+                                serverId: channel.guildId,
+                                matchId: match.matchId,
+                                vote: vote,
+                                points: points
+                            }
+                        )
+                    }
+                })
+                break
+        }
+
+    }
 
     // check for result
 
