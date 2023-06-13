@@ -21,7 +21,7 @@ export interface loadGames {
   DateTime_UTC: DateTime,
   Team1: string,
   Team2: string,
-  BestOf: number
+  BestOf: string
 }
 export async function getDayGames(leagues: string[], day: DateTime) {
   let leagueQuery = ` AND (MatchId LIKE '${leagues[0]}/%'` 

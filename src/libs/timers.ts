@@ -179,7 +179,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
 
     if (matchResult.Winner != null) {
         switch(matchResult.BestOf) {
-            case 3:
+            case '3':
                 console.log("switch case 3")
                 // score matters 
                 const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
