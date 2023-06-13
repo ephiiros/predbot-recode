@@ -105,6 +105,8 @@ export async function getNextGame(leagues: string[], date: DateTime) {
 }
 
 export async function getMatchResult(matchId: string) {
+  console.log("get match result")
+  consol.log(matchId)
   const params = new URLSearchParams({
     action: "cargoquery",
     format: "json",
@@ -112,7 +114,7 @@ export async function getMatchResult(matchId: string) {
     limit: "max",
     tables: "MatchSchedule",
     fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf,Winner,Team1Score,Team2Score",
-    where: `MatchId = ${matchId}`
+    where: `MatchId=${matchId}`
   });
 
   const url:string = baseUrl + params.toString()
@@ -120,6 +122,7 @@ export async function getMatchResult(matchId: string) {
   const responseJson:lolFandomResponse = await response.json()
 
   //@ts-ignore
+  console.log(responseJson)
   let result = {
     MatchId: responseJson.cargoquery[0].title.MatchId,
     DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
