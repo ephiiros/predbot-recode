@@ -164,6 +164,7 @@ export async function lockMatch(match:Bo3Message, serverId:string) {
             match
         }
     )
+    console.log(result)
 }
 
 export async function findMatchMessage(matchId: string, serverId: string) {
