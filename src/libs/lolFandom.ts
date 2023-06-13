@@ -114,7 +114,7 @@ export async function getMatchResult(matchId: string) {
     limit: "max",
     tables: "MatchSchedule",
     fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf,Winner,Team1Score,Team2Score",
-    where: `MatchId=${matchId}`
+    where: `MatchId="${matchId}"`
   });
 
   const url:string = baseUrl + params.toString()
