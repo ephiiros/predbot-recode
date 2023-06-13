@@ -49,10 +49,6 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeBo3(bo3Message, channel.guildId)
 
-                console.log(game.DateTime_UTC)
-                console.log(today)
-                console.log(game.DateTime_UTC.diff(today).milliseconds)
-
                 setTimeout(lockVotes, 
                     game.DateTime_UTC.diff(today).milliseconds, 
                     bo3Message.matchId, 
@@ -69,10 +65,6 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
     console.log("lock votes " + matchId  + " " + channel.guildId)
 
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
-
-    // find array by match id 
-
-    // count
 
     const idsLen = match.ids.length
 
@@ -91,19 +83,27 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         // 2-0
         await messageList[1].edit(messageList[1].cleanContent + " LOCKED !!"
          + messageList[1].reactions.resolve("✅")?.count) 
-        console.log(messageList[1].reactions.resolve("✅")?.users)
+        const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
+
+        //@ts-ignore
+        const ids20 = users20.map(users20 => {
+            console.log("user")
+            console.log(users20.id)
+            return users20.id
+        })
+            
         // 2-1
         await messageList[2].edit(messageList[2].cleanContent + " LOCKED !!"
          + messageList[2].reactions.resolve("✅")?.count) 
-        console.log(messageList[2].reactions.resolve("✅")?.users)
+        const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
         // 1-2
         await messageList[3].edit(messageList[3].cleanContent + " LOCKED !!"
          + messageList[3].reactions.resolve("✅")?.count) 
-        console.log(messageList[3].reactions.resolve("✅")?.users)
+        const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
         // 0-2
         await messageList[4].edit(messageList[4].cleanContent + " LOCKED !!" 
          + messageList[4].reactions.resolve("✅")?.count) 
-        console.log(messageList[4].reactions.resolve("✅")?.users)
+        const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
 
         await messageList[0].reactions.removeAll()
         await messageList[1].reactions.removeAll()
