@@ -44,12 +44,12 @@ module.exports = {
                                         if (game.DateTime_UTC < today) {
                                             todayString += 
                                             "~~" +
-                                            game.DateTime_UTC.toFormat("HH:mm") + " || " +
+                                            game.DateTime_UTC.toFormat("HH:mm") + " " +
                                             game.Team1 + " vs " + game.Team2 + 
                                             "~~\n" 
                                         } else {
                                             todayString += 
-                                            game.DateTime_UTC.toFormat("HH:mm") + " || " +
+                                            game.DateTime_UTC.toFormat("HH:mm") + " " +
                                             game.Team1 + " vs " + game.Team2 + "\n"
                                             newResponse.push(game)
                                         }
@@ -62,7 +62,7 @@ module.exports = {
                                     let tomorrowString = ""
                                     response.forEach(game => {
                                         tomorrowString +=
-                                        game.DateTime_UTC.toFormat("HH:mm") + " || " +
+                                        game.DateTime_UTC.toFormat("HH:mm") + "  " +
                                         game.Team1 + " vs " + game.Team2 + "\n"
                                     })
                                     return tomorrowString
@@ -72,7 +72,7 @@ module.exports = {
                                 .then((response: loadGames) => {
                                     let nextGameString = ""
                                     nextGameString += 
-                                    response.DateTime_UTC.toFormat("HH:mm") + " || " + 
+                                    response.DateTime_UTC.toFormat("HH:mm") + " " + 
                                     response.Team1 + " vs " + response.Team2 + "\n"
 
                                     return nextGameString

@@ -105,8 +105,6 @@ export async function getNextGame(leagues: string[], date: DateTime) {
 }
 
 export async function getMatchResult(matchId: string) {
-  console.log("get match result")
-  console.log(matchId)
   const params = new URLSearchParams({
     action: "cargoquery",
     format: "json",
@@ -134,8 +132,6 @@ export async function getMatchResult(matchId: string) {
     //@ts-ignore
     Team2Score: responseJson.cargoquery[0].title.Team2Score,
   }
-  
-  console.log("done match result")
 
   return result
 }

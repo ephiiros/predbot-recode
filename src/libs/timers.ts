@@ -26,7 +26,8 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 bo3Message.matchId = game.MatchId
 
                 const bo3title = await channel.send(
-                    game.DateTime_UTC.toFormat("HH:mm") +
+                    game.DateTime_UTC.toFormat("HH:mm") + 
+                    " " +
                     game.Team1 + 
                     " vs " + 
                     game.Team2)
@@ -63,7 +64,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 }
 
 export async function lockVotes(matchId: string, channel:TextChannel ) {
-    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "]" + "lockVotes")
+    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] lockVotes")
 
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
 
@@ -80,10 +81,10 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         }
 
         // title card
-        await messageList[0].edit(messageList[0].cleanContent + " LOCKED !!") 
+        await messageList[0].edit(messageList[0].cleanContent + " LOCKED") 
         // 2-0
-        await messageList[1].edit(messageList[1].cleanContent + " LOCKED !!"
-        + messageList[1].reactions.resolve("✅")?.count) 
+        await messageList[1].edit(messageList[1].cleanContent + " LOCKED count:"
+        + await messageList[1].reactions.resolve("✅")?.count) 
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
 
         //@ts-ignore
@@ -98,8 +99,8 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         match.vote20 = ids20
             
         // 2-1
-        await messageList[2].edit(messageList[2].cleanContent + " LOCKED !!"
-        + messageList[2].reactions.resolve("✅")?.count) 
+        await messageList[2].edit(messageList[2].cleanContent + " LOCKED count: "
+        + await messageList[2].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
 
@@ -115,8 +116,8 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         match.vote21 = ids21
 
         // 1-2
-        await messageList[3].edit(messageList[3].cleanContent + " LOCKED !!"
-        + messageList[3].reactions.resolve("✅")?.count) 
+        await messageList[3].edit(messageList[3].cleanContent + " LOCKED count:"
+        + await messageList[3].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
 
@@ -132,8 +133,8 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         match.vote12 = ids12
 
         // 0-2
-        await messageList[4].edit(messageList[4].cleanContent + " LOCKED !!" 
-        + messageList[4].reactions.resolve("✅")?.count) 
+        await messageList[4].edit(messageList[4].cleanContent + " LOCKED count:" 
+        + await messageList[4].reactions.resolve("✅")?.count) 
         //@ts-ignore
         const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
 
@@ -154,17 +155,12 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         await messageList[3].reactions.removeAll()
         await messageList[4].reactions.removeAll()
 
-
-        // TODO: duplicate voting removal ? here or after adding points
-
         lockMatch(match, channel.guildId)
 
-
         setTimeout(countPoints, 
-            2000, //2 seconds
+            3600000, //1 hour
             match.matchId,
             channel)
-
     }
 }
 
@@ -173,7 +169,12 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
     const matchResult = await getMatchResult(match.matchId)
 
-    if (matchResult.Winner != null) {
+    if (matchResult.Winner == null) {
+        setTimeout(countPoints, 
+            3600000, //1 hour
+            match.matchId,
+            channel)
+    } else {
         switch(matchResult.BestOf) {
             case '3':
                 // score matters 
