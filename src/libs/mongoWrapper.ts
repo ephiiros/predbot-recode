@@ -14,16 +14,16 @@ export interface JsonData {
 export interface Server {
     id: string,
     channel: string,
-    messages: Bo1Message[] | Bo3Message[],
     timezone: string,
     leagues: string[]
 }
 
 export interface Bo1Message {
     matchId: string,
-    id: string,
-    blue: string[],
-    red: string[], 
+    serverId: string,
+    ids: string[],
+    vote1: string[],
+    vote2: string[], 
 }
 
 export interface Bo3Message {

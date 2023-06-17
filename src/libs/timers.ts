@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo3Message, commitVote, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
+import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -12,6 +12,33 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
     for (const game of games) {
         switch(Number(game.BestOf)) {
             case 1:
+                let bo1Message: Bo1Message = {
+                    matchId: "", 
+                    serverId: channel.guildId,
+                    ids: [],
+                    vote1: [],
+                    vote2: [],
+                }
+
+                bo1Message.matchId = game.MatchId
+
+                const bo1title = await channel.send(
+                    game.DateTime_UTC.toFormat("HH:mm") + 
+                    " " +
+                    game.Team1 + 
+                    " vs " + 
+                    game.Team2
+                )
+
+                bo1Message.ids.push(bo1title.id)
+                bo1title.react("1️⃣")
+                bo1title.react("2️⃣")
+
+                setTimeout(lockVotes,
+                    game.DateTime_UTC.diff(today).milliseconds,
+                    bo1Message.matchId,
+                    channel
+                )
                 break
             case 3: 
                 let bo3Message: Bo3Message = {
@@ -70,13 +97,52 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
     const idsLen = match.ids.length
 
+    if (idsLen == 1) {
+        let messageList:Message[] = []
+
+        for (const msgId of match.ids) {
+            messageList.push(await channel.messages.fetch(msgId))
+        }
+
+        await messageList[0].edit(messageList[0].cleanContent + " LOCKED")
+
+        const users1 = await messageList[0].reactions.resolve("1️⃣")?.users.fetch() 
+        const users2 = await messageList[0].reactions.resolve("2️⃣")?.users.fetch() 
+
+        const ids1 = []
+        const ids2 = []
+
+        //@ts-ignore
+        users1.forEach(user => {
+            if (!user.bot) {
+                ids1.push(user.id)
+            }
+        })
+        users2.forEach(user => {
+            if (!user.bot) {
+                ids2.push(user.id)
+            }
+        })
+
+        match.vote1 = users1
+        match.vote2 = users2
+
+        await messageList[0].reactions.removeAll()
+
+        lockMatch(match, channel.guildId)
+
+        setTimeout(countPoints, 
+            3600000, //1 hour
+            match.matchId,
+            channel)
+    }
+
     if (idsLen == 5) {
         // match is bo3
 
         let messageList:Message[] = []
 
         for (const msgId of match.ids) {
-            //console.log(await channel.messages.fetch(msgId))
             messageList.push(await channel.messages.fetch(msgId))
         }
 
@@ -176,6 +242,60 @@ export async function countPoints (matchId:string, channel: TextChannel) {
             channel)
     } else {
         switch(matchResult.BestOf) {
+            case '1':
+                const validWins = []
+                const validLoss = []
+                if (matchResult.Winner == 1) {
+                    match.vote1.forEach(userId => {
+                        if (!match.vote2.includes(userId)) {
+                            validWins.push(userId)
+                        }
+                    })
+                    match.vote2.forEach(userId => {
+                        if (!match.vote1.includes(userId)) {
+                            validLoss.push(userId)
+                        }
+                    })
+                } else {
+                    match.vote2.forEach(userId => {
+                        if (!match.vote1.includes(userId)) {
+                            validWins.push(userId)
+                        }
+                    })
+                    match.vote1.forEach(userId => {
+                        if (!match.vote2.includes(userId)) {
+                            validLoss.push(userId)
+                        }
+                    })
+                }
+
+                const allSet = new Set(allVotes)
+
+                allVotes.forEach(userId => {
+                    let vote;
+                    let points;
+                    let invalid = false;
+                    if (validLoss.includes(userId)) {
+                        vote = matchResult.Winner == '1' ? 1 : 2 
+                        points = 0
+                    } else if (validWins.includes(userId)) {
+                        vote = matchResult.Winner
+                        points = 1
+                    } else {
+                        invalid = true 
+                    }
+                    if (invalid = false) {
+                        commitVote(userId,
+                            {
+                                serverId: channel.guildId,
+                                matchId: match.matchId,
+                                vote: vote,
+                                points: points
+                            }
+                        )
+                    }
+                })
+                break
             case '3':
                 // score matters 
                 const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
