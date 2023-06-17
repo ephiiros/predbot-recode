@@ -269,9 +269,18 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                     })
                 }
 
-                const allSet = new Set(allVotes)
+                //@ts-ignore
+                let allVotes1 = []
+                //@ts-ignore
+                allVotes1 = allVotes1.concat(match.vote1)
 
-                allVotes.forEach(userId => {
+                //@ts-ignore
+                allVotes1 = allVotes1.concat(match.vote2)
+
+
+                const allSet1 = new Set(allVotes1)
+
+                allSet1.forEach(userId => {
                     let vote;
                     let points;
                     let invalid = false;
@@ -311,7 +320,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                 //@ts-ignore
                 allVotes = allVotes.concat(match.vote02)
 
-                const allSet = new Set(allVotes)
+                const allSet3 = new Set(allVotes)
 
                 //@ts-ignore
                 const illegalIds = []
@@ -328,7 +337,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                     }
                 }
 
-                allSet.forEach(userId => {
+                allSet3.forEach(userId => {
                     //@ts-ignore
                     if (!illegalIds.includes(userId)) {
                         let vote = ""
