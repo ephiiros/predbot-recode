@@ -5,7 +5,7 @@ import cron from "node-cron";
 import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
 import { sendVoteMessages } from "../libs/timers";
 
-Settings.defaultZoneName = "utc";
+Settings.defaultZone = "utc";
 
 module.exports = { 
     name: Events.ClientReady,
