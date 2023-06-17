@@ -40,11 +40,6 @@ module.exports = {
                                     let todayString = ""
                                     let newResponse:loadGames[] = []
                                     response.forEach(game => {
-                                        console.log(game.DateTime_UTC.toFormat("HH:mm"))
-                                        console.log(game.DateTime_UTC.zoneName)
-                                        console.log(today.toFormat("HH:mm"))
-                                        console.log(game.DateTime_UTC < today)
-                                        console.log(game.DateTime_UTC.diff(today.setZone('utc')).toObject())
                                         if (game.DateTime_UTC < today) {
                                             todayString += 
                                             "~~" +
