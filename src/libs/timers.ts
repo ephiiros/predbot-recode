@@ -243,26 +243,36 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     } else {
         switch(matchResult.BestOf) {
             case '1':
+                    //@ts-ignore
                 const validWins = []
+                    //@ts-ignore
                 const validLoss = []
                 if (matchResult.Winner == 1) {
+                    //@ts-ignore
                     match.vote1.forEach(userId => {
+                    //@ts-ignore
                         if (!match.vote2.includes(userId)) {
                             validWins.push(userId)
                         }
                     })
+                    //@ts-ignore
                     match.vote2.forEach(userId => {
+                    //@ts-ignore
                         if (!match.vote1.includes(userId)) {
                             validLoss.push(userId)
                         }
                     })
                 } else {
+                    //@ts-ignore
                     match.vote2.forEach(userId => {
+                    //@ts-ignore
                         if (!match.vote1.includes(userId)) {
                             validWins.push(userId)
                         }
                     })
+                    //@ts-ignore
                     match.vote1.forEach(userId => {
+                    //@ts-ignore
                         if (!match.vote2.includes(userId)) {
                             validLoss.push(userId)
                         }
@@ -284,9 +294,11 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                     let vote;
                     let points;
                     let invalid = false;
+                    //@ts-ignore
                     if (validLoss.includes(userId)) {
                         vote = matchResult.Winner == '1' ? 1 : 2 
                         points = 0
+                    //@ts-ignore
                     } else if (validWins.includes(userId)) {
                         vote = matchResult.Winner
                         points = 1
