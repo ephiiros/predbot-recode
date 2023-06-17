@@ -119,7 +119,6 @@ export async function getServers(): Promise<Server[]>  {
         serverList.push({
             "id": item.id,
             "channel": item.channel,
-            "messages": [],
             "timezone": item.timezone,
             "leagues": item.leagues
         })
