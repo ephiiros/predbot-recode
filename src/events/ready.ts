@@ -1,9 +1,11 @@
 import { Client, Events, TextChannel } from "discord.js"
 import { getServers } from "../libs/mongoWrapper"
-import { DateTime } from "luxon"
+import { Settings, DateTime } from "luxon"
 import cron from "node-cron";
 import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
 import { sendVoteMessages } from "../libs/timers";
+
+Settings.defaultZoneName = "utc";
 
 module.exports = { 
     name: Events.ClientReady,
