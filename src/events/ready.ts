@@ -42,6 +42,7 @@ module.exports = {
                                         console.log(game.DateTime_UTC.toFormat("HH:mm"))
                                         console.log(today.toFormat("HH:mm"))
                                         console.log(game.DateTime_UTC < today)
+                                        console.log(game.DateTime_UTC.diff(today).toObject())
                                         if (game.DateTime_UTC < today) {
                                             todayString += 
                                             "~~" +
