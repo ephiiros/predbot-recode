@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, lockMatchBo1, writeBo3 } from "./mongoWrapper";
+import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, lockMatchBo1, writeBo1, writeBo3 } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -33,6 +33,8 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 bo1Message.ids.push(bo1title.id)
                 bo1title.react("1️⃣")
                 bo1title.react("2️⃣")
+
+                writeBo1(bo1Message, channel.guildId)
 
                 setTimeout(lockVotes,
                     game.DateTime_UTC.diff(today).milliseconds,

@@ -128,6 +128,23 @@ export async function getServers(): Promise<Server[]>  {
 
 }
 
+export async function writeBo1(bo1Message: Bo1Message, serverId: string) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const messages = database.collection("messages")
+
+    const result = await messages.insertOne({
+        "serverId": serverId,
+        "matchId": bo1Message.matchId,
+        "ids": bo1Message.ids,
+        "vote1": bo1Message.vote1,
+        "vote2": bo1Message.vote2,
+    })
+
+    if (result) {}
+}
+
 export async function writeBo3(bo3Message: Bo3Message, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
