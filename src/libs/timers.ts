@@ -309,7 +309,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                     } else {
                         invalid = true 
                     }
-                    if (invalid = false) {
+                    if (invalid == false) {
                         commitVote(userId,
                             {
                                 serverId: channel.guildId,
