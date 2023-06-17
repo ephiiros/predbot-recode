@@ -28,7 +28,6 @@ module.exports = {
         const server:Server = {
             "id": guild.id,
             "channel": "0",
-            "messages": [],
             "timezone": "UTC",
             "leagues": []
         }
