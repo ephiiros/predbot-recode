@@ -26,7 +26,7 @@ module.exports = {
                         if (server.channel != null) {
                             console.log("["+ server.id +"] Scheduled Message")
                             const channel = client.channels.cache.get(server.channel) as TextChannel
-                            let today = DateTime.now()
+                            let today = DateTime.local().setZone('utc')
                             //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                             if (server.leagues == null) {
