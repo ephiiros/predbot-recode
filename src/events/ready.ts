@@ -41,6 +41,7 @@ module.exports = {
                                     response.forEach(game => {
                                         console.log(game.DateTime_UTC.toFormat("HH:mm"))
                                         console.log(today.toFormat("HH:mm"))
+                                        console.log(game.DateTime_UTC < today)
                                         if (game.DateTime_UTC < today) {
                                             todayString += 
                                             "~~" +
@@ -112,7 +113,8 @@ module.exports = {
                         if (server.channel != null) {
                             console.log("["+ server.id +"] Scheduled Message")
                             const channel = client.channels.cache.get(server.channel) as TextChannel
-                            const today = DateTime.now() //.set({hour: 8, minute: 58}) //test
+                            let today = DateTime.now() //.set({hour: 8, minute: 58}) //test
+                            today = today.setZone('utc')
                             //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                             if (server.leagues == null) {
