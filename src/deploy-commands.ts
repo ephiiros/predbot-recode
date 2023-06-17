@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config()
 
 const clientId = process.env.DISCORD_CLIENT_ID as string
-const guildId = "859795735360307210"
+const guildId = "976555527247106099"
 const token = process.env.DISCORD_TOKEN as string
 
 console.log(token)
