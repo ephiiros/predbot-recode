@@ -172,6 +172,29 @@ export async function lockMatch(match:Bo3Message, serverId:string) {
     )
 }
 
+export async function lockMatchBo1(match:Bo1Message, serverId:string) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const messages = database.collection("messages")
+
+    //@ts-ignore
+    const result = await messages.replaceOne(
+        {
+            "serverId": serverId,
+            "matchId": match.matchId
+
+        },
+        {
+            "serverId": serverId,
+            "matchId": match.matchId,
+            "ids": match.ids,
+            "vote1": match.vote1,
+            "vote2": match.vote2,
+        }
+    )
+}
+
 export async function findMatchMessage(matchId: string, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)

@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, writeBo3 } from "./mongoWrapper";
+import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, lockMatchBo1, writeBo3 } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -118,18 +118,22 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
                 ids1.push(user.id)
             }
         })
+        //@ts-ignore
         users2.forEach(user => {
             if (!user.bot) {
                 ids2.push(user.id)
             }
         })
 
+        //@ts-ignore
         match.vote1 = users1
+        //@ts-ignore
         match.vote2 = users2
 
         await messageList[0].reactions.removeAll()
 
-        lockMatch(match, channel.guildId)
+        //@ts-ignore
+        lockMatchBo1(match, channel.guildId)
 
         setTimeout(countPoints, 
             3600000, //1 hour
