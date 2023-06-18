@@ -95,8 +95,10 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 export async function lockVotes(matchId: string, channel:TextChannel ) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] lockVotes")
 
+    //@ts-ignore
     const match = await findMatchMessage(matchId, channel.guildId) 
 
+    //@ts-ignore
     const idsLen = match.ids.length
 
     if (idsLen == 1) {
@@ -241,7 +243,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     } else {
         switch(matchResult.BestOf) {
             case '1':
-                let bo1Message = match as Bo1Message
+                let bo1Message = match as unknown as Bo1Message
 
                 const validWins:string[] = []
                 const validLoss:string[] = []
@@ -308,7 +310,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                 // score matters 
                 const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
 
-                let bo3Message = match as Bo3Message
+                let bo3Message = match as unknown as Bo3Message
 
                 let allVotes:string[] = []
                 allVotes = allVotes.concat(bo3Message.vote20)
@@ -353,7 +355,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                         commitVote(userId,
                             {
                                 serverId: channel.guildId,
-                                matchId: match.matchId,
+                                matchId: bo3Message.matchId,
                                 vote: vote,
                                 points: points
                             }
