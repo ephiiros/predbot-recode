@@ -95,16 +95,16 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 export async function lockVotes(matchId: string, channel:TextChannel ) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] lockVotes")
 
-    //@ts-ignore
     const match = await findMatchMessage(matchId, channel.guildId) 
 
-    //@ts-ignore
     const idsLen = match.ids.length
 
     if (idsLen == 1) {
         let messageList:Message[] = []
 
-        for (const msgId of match.ids) {
+        const bo1Message = match as unknown as Bo1Message
+
+        for (const msgId of bo1Message.ids) {
             messageList.push(await channel.messages.fetch(msgId))
         }
 
@@ -113,36 +113,39 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         const users1 = await messageList[0].reactions.resolve("1️⃣")?.users.fetch() 
         const users2 = await messageList[0].reactions.resolve("2️⃣")?.users.fetch() 
 
-        const ids1 = []
-        const ids2 = []
+        const ids1:string[] = []
+        const ids2:string[] = []
 
+        //@ts-ignore
         users1.forEach(user => {
             if (!user.bot) {
                 ids1.push(user.id)
             }
         })
+        //@ts-ignore
         users2.forEach(user => {
             if (!user.bot) {
                 ids2.push(user.id)
             }
         })
 
-        match.vote1 = ids1
-        match.vote2 = ids2
+        bo1Message.vote1 = ids1
+        bo1Message.vote2 = ids2
 
         await messageList[0].reactions.removeAll()
 
-        lockMatch(match, channel.guildId)
+        lockMatch(bo1Message, channel.guildId)
 
         setTimeout(countPoints, 
             3600000, //1 hour
-            match.matchId,
+            bo1Message.matchId,
             channel)
 
     } else if (idsLen == 5) {
         let messageList:Message[] = []
+        const bo3Message = match as unknown as Bo3Message
 
-        for (const msgId of match.ids) {
+        for (const msgId of bo3Message.ids) {
             messageList.push(await channel.messages.fetch(msgId))
         }
 
@@ -153,67 +156,67 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         + await messageList[1].reactions.resolve("✅")?.count) 
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
 
-        //@ts-ignore
-        const ids20 = [] 
+        const ids20:string[] = [] 
+
         //@ts-ignore
         users20.forEach(user => {
             if (!user.bot) {
                 ids20.push(user.id)
             }
         })
-        //@ts-ignore
-        match.vote20 = ids20
+
+        bo3Message.vote20 = ids20
             
         // 2-1
         await messageList[2].edit(messageList[2].cleanContent + " LOCKED count: "
         + await messageList[2].reactions.resolve("✅")?.count) 
-        //@ts-ignore
+
         const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
 
-        //@ts-ignore
-        const ids21 = [] 
+        const ids21:string[] = [] 
+
         //@ts-ignore
         users21.forEach(user => {
             if (!user.bot) {
                 ids21.push(user.id)
             }
         })
-        //@ts-ignore
-        match.vote21 = ids21
+
+        bo3Message.vote21 = ids21
 
         // 1-2
         await messageList[3].edit(messageList[3].cleanContent + " LOCKED count:"
         + await messageList[3].reactions.resolve("✅")?.count) 
-        //@ts-ignore
+
         const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
 
-        //@ts-ignore
-        const ids12 = [] 
+        const ids12:string[] = [] 
+
         //@ts-ignore
         users12.forEach(user => {
             if (!user.bot) {
                 ids12.push(user.id)
             }
         })
-        //@ts-ignore
-        match.vote12 = ids12
+
+        bo3Message.vote12 = ids12
 
         // 0-2
         await messageList[4].edit(messageList[4].cleanContent + " LOCKED count:" 
         + await messageList[4].reactions.resolve("✅")?.count) 
-        //@ts-ignore
+
         const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
 
-        //@ts-ignore
-        const ids02 = [] 
+        const ids02:string[] = [] 
+
         //@ts-ignore
         users02.forEach(user => {
             if (!user.bot) {
                 ids02.push(user.id)
             }
         })
-        //@ts-ignore
-        match.vote02 = ids02
+
+        bo3Message.vote02 = ids02
 
         await messageList[0].reactions.removeAll()
         await messageList[1].reactions.removeAll()
@@ -221,11 +224,11 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         await messageList[3].reactions.removeAll()
         await messageList[4].reactions.removeAll()
 
-        lockMatch(match, channel.guildId)
+        lockMatch(bo3Message, channel.guildId)
 
         setTimeout(countPoints, 
             3600000, //1 hour
-            match.matchId,
+            bo3Message.matchId,
             channel)
     }
 }
