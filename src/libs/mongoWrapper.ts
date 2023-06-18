@@ -128,88 +128,83 @@ export async function getServers(): Promise<Server[]>  {
 
 }
 
-export async function writeBo1(bo1Message: Bo1Message, serverId: string) {
+
+export async function writeMessage(message: Bo3Message | Bo1Message, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
-    const result = await messages.insertOne({
-        "serverId": serverId,
-        "matchId": bo1Message.matchId,
-        "ids": bo1Message.ids,
-        "vote1": bo1Message.vote1,
-        "vote2": bo1Message.vote2,
-    })
+    if (message.ids.length == 1) {
+        const bo1Message = message as Bo1Message
 
-    if (result) {}
+        await messages.insertOne({
+            "serverId": serverId,
+            "matchId": bo1Message.matchId,
+            "ids": bo1Message.ids,
+            "vote1": bo1Message.vote1,
+            "vote2": bo1Message.vote2,
+        })
+
+    } else if (message.ids.length == 5) {
+        const bo3Message = message as Bo3Message
+
+        await messages.insertOne({
+            "serverId": serverId,
+            "matchId": bo3Message.matchId,
+            "ids": bo3Message.ids,
+            "vote20": bo3Message.vote20,
+            "vote21": bo3Message.vote21,
+            "vote12": bo3Message.vote12,
+            "vote02": bo3Message.vote02
+        })
+
+    }
 }
 
-export async function writeBo3(bo3Message: Bo3Message, serverId: string) {
+export async function lockMatch(message:Bo1Message | Bo3Message ,serverId:string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
-    const result = await messages.insertOne({
-        "serverId": serverId,
-        "matchId": bo3Message.matchId,
-        "ids": bo3Message.ids,
-        "vote20": bo3Message.vote20,
-        "vote21": bo3Message.vote21,
-        "vote12": bo3Message.vote12,
-        "vote02": bo3Message.vote02
-    })
+    if (message.ids.length == 1) {
+        const bo1Message = message as Bo1Message
+        await messages.replaceOne(
+            {
+                "serverId": serverId,
+                "matchId": bo1Message.matchId
+            },
+            {
+                "serverId": serverId,
+                "matchId": bo1Message.matchId,
+                "ids": bo1Message.ids,
+                "vote1": bo1Message.vote1,
+                "vote2": bo1Message.vote2,
+            }
+        )
 
-    if (result) {}
-}
+    } else if (message.ids.length == 5) {
+        const bo3Message = message as Bo3Message
+        await messages.replaceOne(
+            {
+                "serverId": serverId,
+                "matchId": bo3Message.matchId
 
-export async function lockMatch(match:Bo3Message, serverId:string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
-    const database = client.db("predbot")
-    const messages = database.collection("messages")
+            },
+            {
+                "serverId": serverId,
+                "matchId": bo3Message.matchId,
+                "ids": bo3Message.ids,
+                "vote20": bo3Message.vote20,
+                "vote21": bo3Message.vote21,
+                "vote12": bo3Message.vote12,
+                "vote02": bo3Message.vote02,
+            }
+        )
 
-    //@ts-ignore
-    const result = await messages.replaceOne(
-        {
-            "serverId": serverId,
-            "matchId": match.matchId
+    }
 
-        },
-        {
-            "serverId": serverId,
-            "matchId": match.matchId,
-            "ids": match.ids,
-            "vote20": match.vote20,
-            "vote21": match.vote21,
-            "vote12": match.vote12,
-            "vote02": match.vote02,
-        }
-    )
-}
-
-export async function lockMatchBo1(match:Bo1Message, serverId:string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
-    const database = client.db("predbot")
-    const messages = database.collection("messages")
-
-    //@ts-ignore
-    const result = await messages.replaceOne(
-        {
-            "serverId": serverId,
-            "matchId": match.matchId
-
-        },
-        {
-            "serverId": serverId,
-            "matchId": match.matchId,
-            "ids": match.ids,
-            "vote1": match.vote1,
-            "vote2": match.vote2,
-        }
-    )
 }
 
 export async function findMatchMessage(matchId: string, serverId: string) {
@@ -224,7 +219,7 @@ export async function findMatchMessage(matchId: string, serverId: string) {
             "serverId": serverId,
             "matchId": matchId
         }
-    )
+    ) as Bo1Message | Bo3Message
 
     return result
 }

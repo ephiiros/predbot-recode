@@ -1,7 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, lockMatchBo1, writeBo1, writeBo3 } from "./mongoWrapper";
+import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, writeMessage } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -10,8 +10,8 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
     channel.send("**VOTEVOTEVOTEVOTEVOTE**")
 
     for (const game of games) {
-        switch(Number(game.BestOf)) {
-            case 1:
+        switch(game.BestOf) {
+            case '1':
                 let bo1Message: Bo1Message = {
                     matchId: "", 
                     serverId: channel.guildId,
@@ -34,7 +34,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 bo1title.react("1️⃣")
                 bo1title.react("2️⃣")
 
-                writeBo1(bo1Message, channel.guildId)
+                writeMessage(bo1Message, channel.guildId)
 
                 setTimeout(lockVotes,
                     game.DateTime_UTC.diff(today).milliseconds,
@@ -42,7 +42,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                     channel
                 )
                 break
-            case 3: 
+            case '3': 
                 let bo3Message: Bo3Message = {
                     matchId: "",
                     serverId: channel.guildId,
@@ -78,7 +78,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 msg02.react("✅")
                 bo3Message.ids.push(msg02.id)
 
-                writeBo3(bo3Message, channel.guildId)
+                writeMessage(bo3Message, channel.guildId)
 
                 setTimeout(lockVotes, 
                     game.DateTime_UTC.diff(today).milliseconds, 
@@ -86,7 +86,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                     channel)
 
                 break
-            case 5:
+            case '5':
                 break
         }
     }
@@ -95,7 +95,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 export async function lockVotes(matchId: string, channel:TextChannel ) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] lockVotes")
 
-    const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
+    const match = await findMatchMessage(matchId, channel.guildId) 
 
     const idsLen = match.ids.length
 
@@ -114,38 +114,30 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         const ids1 = []
         const ids2 = []
 
-        //@ts-ignore
         users1.forEach(user => {
             if (!user.bot) {
                 ids1.push(user.id)
             }
         })
-        //@ts-ignore
         users2.forEach(user => {
             if (!user.bot) {
                 ids2.push(user.id)
             }
         })
 
-        //@ts-ignore
-        match.vote1 = users1
-        //@ts-ignore
-        match.vote2 = users2
+        match.vote1 = ids1
+        match.vote2 = ids2
 
         await messageList[0].reactions.removeAll()
 
-        //@ts-ignore
-        lockMatchBo1(match, channel.guildId)
+        lockMatch(match, channel.guildId)
 
         setTimeout(countPoints, 
             3600000, //1 hour
             match.matchId,
             channel)
-    }
 
-    if (idsLen == 5) {
-        // match is bo3
-
+    } else if (idsLen == 5) {
         let messageList:Message[] = []
 
         for (const msgId of match.ids) {
@@ -238,7 +230,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
 export async function countPoints (matchId:string, channel: TextChannel) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId +  "] countPoints")
-    const match:Bo3Message = await findMatchMessage(matchId, channel.guildId) as unknown as Bo3Message
+    const match = await findMatchMessage(matchId, channel.guildId) 
     const matchResult = await getMatchResult(match.matchId)
 
     if (matchResult.Winner == null) {
@@ -249,50 +241,39 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     } else {
         switch(matchResult.BestOf) {
             case '1':
-                    //@ts-ignore
-                const validWins = []
-                    //@ts-ignore
-                const validLoss = []
+                let bo1Message = match as Bo1Message
+
+                const validWins:string[] = []
+                const validLoss:string[] = []
+
                 if (matchResult.Winner == 1) {
-                    //@ts-ignore
-                    match.vote1.forEach(userId => {
-                    //@ts-ignore
-                        if (!match.vote2.includes(userId)) {
+                    //TODO: foreach doesnt exist
+                    bo1Message.vote1.forEach(userId => {
+                        if (!bo1Message.vote2.includes(userId)) {
                             validWins.push(userId)
                         }
                     })
-                    //@ts-ignore
-                    match.vote2.forEach(userId => {
-                    //@ts-ignore
-                        if (!match.vote1.includes(userId)) {
+                    bo1Message.vote2.forEach(userId => {
+                        if (!bo1Message.vote1.includes(userId)) {
                             validLoss.push(userId)
                         }
                     })
                 } else {
-                    //@ts-ignore
-                    match.vote2.forEach(userId => {
-                    //@ts-ignore
-                        if (!match.vote1.includes(userId)) {
+                    bo1Message.vote2.forEach(userId => {
+                        if (!bo1Message.vote1.includes(userId)) {
                             validWins.push(userId)
                         }
                     })
-                    //@ts-ignore
-                    match.vote1.forEach(userId => {
-                    //@ts-ignore
-                        if (!match.vote2.includes(userId)) {
+                    bo1Message.vote1.forEach(userId => {
+                        if (!bo1Message.vote2.includes(userId)) {
                             validLoss.push(userId)
                         }
                     })
                 }
 
-                //@ts-ignore
-                let allVotes1 = []
-                //@ts-ignore
-                allVotes1 = allVotes1.concat(match.vote1)
-
-                //@ts-ignore
-                allVotes1 = allVotes1.concat(match.vote2)
-
+                let allVotes1:string[] = []
+                allVotes1 = allVotes1.concat(bo1Message.vote1)
+                allVotes1 = allVotes1.concat(bo1Message.vote2)
 
                 const allSet1 = new Set(allVotes1)
 
@@ -300,11 +281,11 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                     let vote;
                     let points;
                     let invalid = false;
-                    //@ts-ignore
+
                     if (validLoss.includes(userId)) {
                         vote = matchResult.Winner == '1' ? 1 : 2 
                         points = 0
-                    //@ts-ignore
+
                     } else if (validWins.includes(userId)) {
                         vote = matchResult.Winner
                         points = 1
@@ -327,22 +308,19 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                 // score matters 
                 const scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
 
-                //@ts-ignore
-                let allVotes = []
-                //@ts-ignore
-                allVotes = allVotes.concat(match.vote20)
-                //@ts-ignore
-                allVotes = allVotes.concat(match.vote21)
-                //@ts-ignore
-                allVotes = allVotes.concat(match.vote12)
-                //@ts-ignore
-                allVotes = allVotes.concat(match.vote02)
+                let bo3Message = match as Bo3Message
+
+                let allVotes:string[] = []
+                allVotes = allVotes.concat(bo3Message.vote20)
+                allVotes = allVotes.concat(bo3Message.vote21)
+                allVotes = allVotes.concat(bo3Message.vote12)
+                allVotes = allVotes.concat(bo3Message.vote02)
 
                 const allSet3 = new Set(allVotes)
 
-                //@ts-ignore
-                const illegalIds = []
+                const illegalIds:string[] = []
                 const userCounts = {}
+
                 allVotes.forEach(userId => {
                     //@ts-ignore
                     userCounts[userId] = (userCounts[userId] || 0) + 1;
@@ -356,20 +334,19 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                 }
 
                 allSet3.forEach(userId => {
-                    //@ts-ignore
                     if (!illegalIds.includes(userId)) {
                         let vote = ""
                         let points = 0
-                        if (match.vote20.includes(userId)) { vote = "20"
+                        if (bo3Message.vote20.includes(userId)) { vote = "20"
                             if (scoreString == "20") { points = 3}
                             else if (scoreString == "21") { points = 1}
-                        } else if (match.vote21.includes(userId)) { vote = "21"
+                        } else if (bo3Message.vote21.includes(userId)) { vote = "21"
                             if (scoreString == "21") { points = 3}
                             else if (scoreString == "20") { points = 1}
-                        } else if (match.vote12.includes(userId)) { vote = "12"
+                        } else if (bo3Message.vote12.includes(userId)) { vote = "12"
                             if (scoreString == "12") { points = 3}
                             else if (scoreString == "21") { points = 1}
-                        } else if (match.vote02.includes(userId)) { vote = "02"
+                        } else if (bo3Message.vote02.includes(userId)) { vote = "02"
                             if (scoreString == "02") { points = 3}
                             else if (scoreString == "12") { points = 1}
                         }
@@ -385,6 +362,5 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                 })
                 break
         }
-
     }
 }
