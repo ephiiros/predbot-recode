@@ -95,7 +95,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 export async function lockVotes(matchId: string, channel:TextChannel ) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] lockVotes")
 
-    const match = await findMatchMessage(matchId, channel.guildId) 
+    const match = await findMatchMessage(matchId, channel.guildId) as unknown as Bo1Message | Bo3Message
 
     const idsLen = match.ids.length
 
@@ -235,7 +235,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
 export async function countPoints (matchId:string, channel: TextChannel) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId +  "] countPoints")
-    const match = await findMatchMessage(matchId, channel.guildId) 
+    const match = await findMatchMessage(matchId, channel.guildId) as unknown as Bo1Message | Bo3Message
     const matchResult = await getMatchResult(match.matchId)
 
     if (matchResult.Winner == null) {
