@@ -214,7 +214,7 @@ export async function findMatchMessage(matchId: string, serverId: string) {
     const messages = database.collection("messages")
 
 
-    const result = await messages.findOne(
+    const result:Bo1Message | Bo3Message = await messages.findOne(
         {
             "serverId": serverId,
             "matchId": matchId
