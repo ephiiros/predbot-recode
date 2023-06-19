@@ -38,7 +38,7 @@ module.exports = {
 
         for (let item in items) {
             //@ts-ignore
-            console.log(item[0])
+            console.log(item)
             const isMember = await interaction.guild.members.fetch(item[0]).then(() => true).catch(() => false);
             console.log(isMember)
 
