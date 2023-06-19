@@ -3,8 +3,8 @@ import { getHistory } from "../libs/mongoWrapper";
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('leaderboard')
-		.setDescription('leaderboard'),
+		.setName('history')
+		.setDescription('history'),
 	async execute(interaction:any) {
         const user = await getHistory(interaction.member.id)
 
