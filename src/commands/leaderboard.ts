@@ -38,9 +38,9 @@ module.exports = {
 
         let leaderboardString = '\`\`\`\n'
 
-        for (let item in items) {
+        for (let item of items) {
             //@ts-ignore
-            console.log(item)
+            console.log(item[0])
             const isMember = await interaction.guild.members.fetch(item[0]).then(() => true).catch(() => false);
             console.log(isMember)
 
