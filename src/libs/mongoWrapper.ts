@@ -249,15 +249,8 @@ export async function getUsers() {
     const database = client.db("predbot")
     const users = database.collection("users")
 
-    const result:any[] = []
-    const cursor = await users.find()
-    //@ts-ignore
-    cursor.each(function(err, item) {
-        if(item == null) {
-            return;
-        }
-        result.push(item)
-    })
+    const cursor = await users.find({})
+    const result = await cursor.toArray()
 
     return result
 }
