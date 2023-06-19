@@ -10,6 +10,7 @@ module.exports = {
 
         let interactionString = '\n'
 
+        //@ts-ignore
         user.history.forEach((game) => {
             interactionString += game.matchId
             if (game.points != 0) {
