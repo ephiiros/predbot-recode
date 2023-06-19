@@ -254,3 +254,18 @@ export async function getUsers() {
 
     return result
 }
+
+export async function getHistory(userId:string) {
+    const uri:string = process.env.DB_CONN_STRING as string
+    const client = new MongoClient(uri)
+    const database = client.db("predbot")
+    const users = database.collection("users")
+
+    const result = await users.findOne(
+        {
+            "id": userId
+        }
+    )
+
+    return result
+}

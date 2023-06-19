@@ -7,7 +7,6 @@ module.exports = {
 		.setDescription('leaderboard'),
 	async execute(interaction:any) {
         const result = await getUsers()
-        console.log(result)
         const leaderboard: any = {}
 
         //@ts-ignore
