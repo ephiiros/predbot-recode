@@ -25,14 +25,16 @@ module.exports = {
 
         // Create items array
         var items = Object.keys(leaderboard).map(function(key) {
-        return [key, leaderboard[key]];
+            return [key, leaderboard[key]];
         });
+
 
         // Sort the array based on the second element
         items.sort(function(first, second) {
             return second[1] - first[1];
         });
 
+        console.log(items)
 
         let leaderboardString = '\`\`\`\n'
 
