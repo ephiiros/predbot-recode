@@ -37,12 +37,13 @@ module.exports = {
         let leaderboardString = '\`\`\`\n'
 
         for (let item in items) {
-            let dcuser = await interaction.guild.members.fetch(item[0])
             //@ts-ignore
+            let dcuser = interaction.guild.members.cache.find(user => user.id == item[0])
+            console.log(dcuser)
+            if(dcuser) {
+                leaderboardString += dcuser.username + ' ' + item[1] + '\n'
+            }
 
-            console.log(interaction.guild.members.cache.find(user => user.id == item[0]))
-
-            leaderboardString += dcuser.username + ' ' + item[1] + '\n'
         }
         leaderboardString += '\`\`\`'
 
