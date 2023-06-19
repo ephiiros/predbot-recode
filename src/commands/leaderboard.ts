@@ -38,12 +38,14 @@ module.exports = {
 
         for (let item in items) {
             //@ts-ignore
-            let dcuser = interaction.guild.members.cache.find(user => user.id == item[0])
-            console.log(dcuser)
-            if(dcuser) {
+            console.log(item[0])
+            const isMember = await interaction.guild.members.fetch(item[0]).then(() => true).catch(() => false);
+            console.log(isMember)
+
+            if(isMember) {
+                let dcuser = await interaction.guild.members.fetch(item[0])
                 leaderboardString += dcuser.username + ' ' + item[1] + '\n'
             }
-
         }
         leaderboardString += '\`\`\`'
 
