@@ -249,10 +249,15 @@ export async function getUsers() {
     const database = client.db("predbot")
     const users = database.collection("users")
 
-    const result = await users.find(
-        {
+    const result:any[] = []
+    const cursor = await users.find()
+    cursor.each(function(err, item) {
+        if(item == null) {
+            users.close(); // you may not want to close the DB if you have more code....
+            return;
         }
-    )
+        result.push(item)
+    })
 
     return result
 }
