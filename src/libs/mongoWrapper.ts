@@ -251,9 +251,10 @@ export async function getUsers() {
 
     const result:any[] = []
     const cursor = await users.find()
+    //@ts-ignore
     cursor.each(function(err, item) {
         if(item == null) {
-            users.close(); // you may not want to close the DB if you have more code....
+            database.close(); // you may not want to close the DB if you have more code....
             return;
         }
         result.push(item)
