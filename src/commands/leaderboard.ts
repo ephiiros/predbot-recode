@@ -38,7 +38,7 @@ module.exports = {
 
         let leaderboardString = '\`\`\`\n'
 
-        for (let item of items) {
+        items.forEach(async (item) => {
             //@ts-ignore
             console.log(item[0])
             const isMember = await interaction.guild.members.fetch(item[0]).then(() => true).catch(() => false);
@@ -46,9 +46,10 @@ module.exports = {
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
-                leaderboardString += dcuser.username + ' ' + item[1] + '\n'
+                leaderboardString += dcuser.displayName + ' ' + item[1] + '\n'
             }
-        }
+
+        })
         leaderboardString += '\`\`\`'
 
 
