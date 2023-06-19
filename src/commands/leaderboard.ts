@@ -22,6 +22,7 @@ module.exports = {
             })
         })
 
+		await interaction.reply({content: 'loading'});
 
         // Create items array
         var items = Object.keys(leaderboard).map(function(key) {
@@ -51,11 +52,7 @@ module.exports = {
         }
         leaderboardString += '\`\`\`'
 
+        await interaction.editReply(leaderboardString);
 
-		await interaction.reply(
-			{
-				content: leaderboardString, 
-			}
-		);
 	},
 };
