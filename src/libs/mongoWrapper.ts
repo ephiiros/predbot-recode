@@ -254,7 +254,6 @@ export async function getUsers() {
     //@ts-ignore
     cursor.each(function(err, item) {
         if(item == null) {
-            database.close(); // you may not want to close the DB if you have more code....
             return;
         }
         result.push(item)
