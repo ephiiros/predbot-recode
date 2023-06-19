@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "discord.js";
-import { getUsersInServer } from "../libs/mongoWrapper";
+import { getUsers } from "../libs/mongoWrapper";
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('leaderboard')
 		.setDescription('leaderboard'),
 	async execute(interaction:any) {
-        const result = await getUsersInServer(interaction.guildId)
+        const result = await getUsers()
         console.log(result)
         const leaderboard: any = {}
 

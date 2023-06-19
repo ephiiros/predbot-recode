@@ -243,7 +243,7 @@ export async function commitVote(userId:string, vote:Object) {
     )
 }
 
-export async function getUsersInServer(serverId:string) {
+export async function getUsers() {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
