@@ -7,6 +7,7 @@ module.exports = {
 		.setDescription('leaderboard'),
 	async execute(interaction:any) {
         const result = await getUsersInServer(interaction.guildId)
+        console.log(result)
         const leaderboard: any = {}
 
         //@ts-ignore

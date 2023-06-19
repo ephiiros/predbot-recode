@@ -251,7 +251,6 @@ export async function getUsersInServer(serverId:string) {
 
     const result = await users.find(
         {
-            "serverId": serverId
         }
     )
 
