@@ -35,15 +35,12 @@ module.exports = {
             return second[1] - first[1];
         });
 
-        console.log(items)
 
         let leaderboardString = '\`\`\`\n'
 
         for await (let item of items) {
             //@ts-ignore
-            console.log(item[0])
             const isMember = await interaction.guild.members.fetch(item[0]).then(() => true).catch(() => false);
-            console.log(isMember)
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])

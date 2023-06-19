@@ -292,7 +292,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                         points = 0
 
                     } else if (validWins.includes(userId)) {
-                        vote = matchResult.Winner
+                        vote = Number(matchResult.Winner)
                         points = 1
                     } else {
                         invalid = true 
