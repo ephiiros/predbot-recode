@@ -239,6 +239,9 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     const matchResult = await getMatchResult(match.matchId)
 
     if (matchResult == null || matchResult.Winner == null) {
+        console.log("[" + DateTime.now().toFormat("HH:mm") + 
+        "] [" + channel.guildId +  
+        "] matchResult/Winner null 1 hour timeout")
         setTimeout(countPoints, 
             3600000, //1 hour
             match.matchId,
