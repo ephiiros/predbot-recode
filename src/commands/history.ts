@@ -19,7 +19,7 @@ module.exports = {
                 interactionString += `VOTED: ${game.vote} | POINTS RECIEVED: ${game.points} \n`
             } else {
                 interactionString += "❌ "
-                interactionString += game.matchId.replace('Season ', '').repalce('Season_', '')
+                interactionString += game.matchId.replace('Season ', '').replace('Season_', '')
                 interactionString += " "
                 interactionString += `VOTED: ${game.vote} | POINTS: ${game.points} \n`
             }
