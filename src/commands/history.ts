@@ -13,13 +13,15 @@ module.exports = {
         //@ts-ignore
         user.history.forEach((game) => {
             if (game.points != 0) {
-                interactionString += " ✅ "
-                interactionString += game.matchId.replace('Season', '')
+                interactionString += "✅ "
+                interactionString += game.matchId.replace('Season ', '').replace('Season_', '')
+                interactionString += " "
                 interactionString += `VOTED: ${game.vote} | POINTS RECIEVED: ${game.points} \n`
             } else {
-                interactionString += " ❌ "
-                interactionString += game.matchId.replace('Season', '')
-                interactionString += `VOTED: ${game.vote} | POINTS RECIEVED: ${game.points} \n`
+                interactionString += "❌ "
+                interactionString += game.matchId.replace('Season ', '').repalce('Season_', '')
+                interactionString += " "
+                interactionString += `VOTED: ${game.vote} | POINTS: ${game.points} \n`
             }
         })
 
