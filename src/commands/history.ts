@@ -14,14 +14,18 @@ module.exports = {
         user.history.forEach((game) => {
             if (game.points != 0) {
                 interactionString += "✅ "
-                interactionString += game.matchId.replace('Season ', '').replace('Season_', '')
+                interactionString += "`"
+                interactionString += game.matchId.replace(' Season', '').replace('Season_', '')
                 interactionString += " "
-                interactionString += `VOTED: ${game.vote} | POINTS RECIEVED: ${game.points} \n`
+                interactionString += `VOTED: ${game.vote} | POINTS: ${game.points}\n`
+                interactionString += "`"
             } else {
                 interactionString += "❌ "
-                interactionString += game.matchId.replace('Season ', '').replace('Season_', '')
+                interactionString += "`"
+                interactionString += game.matchId.replace(' Season', '').replace('Season_', '')
                 interactionString += " "
-                interactionString += `VOTED: ${game.vote} | POINTS: ${game.points} \n`
+                interactionString += `VOTED: ${game.vote} | POINTS: ${game.points}\n`
+                interactionString += "`"
             }
         })
 
