@@ -119,18 +119,22 @@ export async function getMatchResult(matchId: string) {
   const response = await fetch(url)
   const responseJson:lolFandomResponse = await response.json()
 
-  let result = {
-    MatchId: responseJson.cargoquery[0].title.MatchId,
-    DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
-    Team1: responseJson.cargoquery[0].title.Team1,
-    Team2: responseJson.cargoquery[0].title.Team2,
-    BestOf: responseJson.cargoquery[0].title.BestOf,
-    //@ts-ignore
-    Winner: responseJson.cargoquery[0].title.Winner,
-    //@ts-ignore
-    Team1Score: responseJson.cargoquery[0].title.Team1Score,
-    //@ts-ignore
-    Team2Score: responseJson.cargoquery[0].title.Team2Score,
+  let result = null
+
+  if (responseJson.cargoquery[0].title) {
+    result = {
+      MatchId: responseJson.cargoquery[0].title.MatchId,
+      DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
+      Team1: responseJson.cargoquery[0].title.Team1,
+      Team2: responseJson.cargoquery[0].title.Team2,
+      BestOf: responseJson.cargoquery[0].title.BestOf,
+      //@ts-ignore
+      Winner: responseJson.cargoquery[0].title.Winner,
+      //@ts-ignore
+      Team1Score: responseJson.cargoquery[0].title.Team1Score,
+      //@ts-ignore
+      Team2Score: responseJson.cargoquery[0].title.Team2Score,
+    }
   }
 
   return result

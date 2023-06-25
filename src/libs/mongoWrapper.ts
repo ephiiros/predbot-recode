@@ -65,6 +65,7 @@ export async function updateServerChannel (serverId:string, channelId:TextChanne
             }
         }
     )
+    client.close()
 }
 
 export async function updateServerLeague (serverId: string, leagues: string[]) {
@@ -83,6 +84,7 @@ export async function updateServerLeague (serverId: string, leagues: string[]) {
             }
         }
     )
+    client.close()
 }
 
 export async function addServer (server: Server) {
@@ -105,6 +107,7 @@ export async function addServer (server: Server) {
         })
         console.log(result)
     }
+    client.close()
 }
 
 export async function getServers(): Promise<Server[]>  {
@@ -124,6 +127,7 @@ export async function getServers(): Promise<Server[]>  {
         })
         
     });
+    client.close()
     return serverList as Server[]
 
 }
@@ -160,6 +164,7 @@ export async function writeMessage(message: Bo3Message | Bo1Message, serverId: s
         })
 
     }
+    client.close()
 }
 
 export async function lockMatch(message:Bo1Message | Bo3Message ,serverId:string) {
@@ -204,6 +209,7 @@ export async function lockMatch(message:Bo1Message | Bo3Message ,serverId:string
         )
 
     }
+    client.close()
 
 }
 
@@ -220,6 +226,7 @@ export async function findMatchMessage(matchId: string, serverId: string) {
             "matchId": matchId
         }
     ) 
+    client.close()
 
     return result
 }
@@ -241,6 +248,7 @@ export async function commitVote(userId:string, vote:Object) {
             upsert: true
         }
     )
+    client.close()
 }
 
 export async function getUsers() {
@@ -252,6 +260,7 @@ export async function getUsers() {
     const cursor = await users.find({})
     const result = await cursor.toArray()
 
+    client.close()
     return result
 }
 
@@ -267,5 +276,6 @@ export async function getHistory(userId:string) {
         }
     )
 
+    client.close()
     return result
 }

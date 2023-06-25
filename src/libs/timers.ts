@@ -238,7 +238,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
     const match = await findMatchMessage(matchId, channel.guildId) as unknown as Bo1Message | Bo3Message
     const matchResult = await getMatchResult(match.matchId)
 
-    if (matchResult.Winner == null) {
+    if (matchResult == null || matchResult.Winner == null) {
         setTimeout(countPoints, 
             3600000, //1 hour
             match.matchId,
