@@ -65,14 +65,14 @@ async function readyEvent(client: Client) {
 
                         Promise.all([todayGames, tomorrowGames, nextGame]).then((values) => {
                             let dailyMessage = 
-                                "# CURRENT DATE AND TIME " +
+                                "## CURRENT DATE AND TIME " +
                                 `<t:${Math.floor(today.toMillis()/1000)}:f>\n` + 
-                                "# GAMES TODAY \n"
+                                "## GAMES TODAY \n"
 
                             dailyMessage += values[0][0]
-                            dailyMessage += "# GAMES TOMORROW\n"
+                            dailyMessage += "## GAMES TOMORROW\n"
                             dailyMessage += values[1]
-                            dailyMessage += "# NEXT GAME\n"
+                            dailyMessage += "## NEXT GAME\n"
                             dailyMessage += values[2]
 
                             // send for the day but lock individually
