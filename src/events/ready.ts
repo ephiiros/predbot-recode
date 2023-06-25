@@ -66,7 +66,7 @@ async function readyEvent(client: Client) {
                         Promise.all([todayGames, tomorrowGames, nextGame]).then((values) => {
                             let dailyMessage = 
                                 "**CURRENT DATE AND TIME** " +
-                                `<t:${today.toMillis()}\n:f>` + 
+                                `<t:${Math.floor(today.toMillis()/1000)}:f>\n` + 
                                 "**GAMES TODAY**\n"
 
                             dailyMessage += values[0][0]
