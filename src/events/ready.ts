@@ -29,12 +29,12 @@ async function readyEvent(client: Client) {
                                 if (game.DateTime_UTC < today) {
                                     todayString += 
                                     "~~" +
-                                    game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                    "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
                                     game.Team1 + " vs " + game.Team2 + 
                                     "~~\n" 
                                 } else {
                                     todayString += 
-                                    game.DateTime_UTC.toFormat("HH:mm") + " " +
+                                    "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
                                     game.Team1 + " vs " + game.Team2 + "\n"
                                     newResponse.push(game)
                                 }
@@ -47,7 +47,7 @@ async function readyEvent(client: Client) {
                             let tomorrowString = ""
                             response.forEach(game => {
                                 tomorrowString +=
-                                game.DateTime_UTC.toFormat("HH:mm") + "  " +
+                                    "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
                                 game.Team1 + " vs " + game.Team2 + "\n"
                             })
                             return tomorrowString
@@ -57,7 +57,7 @@ async function readyEvent(client: Client) {
                         .then((response: loadGames) => {
                             let nextGameString = ""
                             nextGameString += 
-                            response.DateTime_UTC.toFormat("HH:mm") + " " + 
+                            "<t:" + Math.floor(response.DateTime_UTC.toMillis()/1000) + ":t>" + " " + 
                             response.Team1 + " vs " + response.Team2 + "\n"
 
                             return nextGameString
@@ -65,14 +65,14 @@ async function readyEvent(client: Client) {
 
                         Promise.all([todayGames, tomorrowGames, nextGame]).then((values) => {
                             let dailyMessage = 
-                                "**CURRENT DATE AND TIME** " +
+                                "# CURRENT DATE AND TIME " +
                                 `<t:${Math.floor(today.toMillis()/1000)}:f>\n` + 
-                                "**GAMES TODAY**\n"
+                                "# GAMES TODAY \n"
 
                             dailyMessage += values[0][0]
-                            dailyMessage += "**GAMES TOMORROW**\n"
+                            dailyMessage += "# GAMES TOMORROW\n"
                             dailyMessage += values[1]
-                            dailyMessage += "**NEXT GAME**\n"
+                            dailyMessage += "# NEXT GAME\n"
                             dailyMessage += values[2]
 
                             // send for the day but lock individually
