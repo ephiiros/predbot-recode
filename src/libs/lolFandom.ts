@@ -83,7 +83,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
     limit: "max",
     tables: "MatchSchedule",
     fields: "MatchId,DateTime_UTC,Team1,Team2,BestOf",
-    where: `DateTime_UTC > '${after.toFormat("yyyy-MM-dd")}'`
+    where: `DateTime_UTC > '${after.toFormat("yyyy-MM-dd HH:mm:ss")}'`
         + leagueQuery,
     order_by: "DateTime_UTC ASC"
   });

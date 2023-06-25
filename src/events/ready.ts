@@ -30,16 +30,16 @@ async function readyEvent(client: Client) {
                                     todayString += 
                                     "~~" +
                                     "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
-                                    "**" + game.Team1 + "**" + 
+                                    game.Team1 + 
                                     " vs " + 
-                                    "**" + game.Team2 + "**" +
+                                    game.Team2 + 
                                     "~~\n" 
                                 } else {
                                     todayString += 
                                     "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
-                                    "**" + game.Team1 + "**" + 
+                                    game.Team1 + 
                                     " vs " + 
-                                    "**" + game.Team2 + "**" +
+                                    game.Team2 + 
                                     "~~\n" 
                                     newResponse.push(game)
                                 }
@@ -53,9 +53,9 @@ async function readyEvent(client: Client) {
                             response.forEach(game => {
                                 tomorrowString +=
                                     "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
-                                    "**" + game.Team1 + "**" + 
+                                    game.Team1 + 
                                     " vs " + 
-                                    "**" + game.Team2 + "**" +
+                                    game.Team2 + 
                                     "\n" 
                             })
                             return tomorrowString
@@ -65,10 +65,10 @@ async function readyEvent(client: Client) {
                         .then((response: loadGames) => {
                             let nextGameString = ""
                             nextGameString += 
-                            "<t:" + Math.floor(response.DateTime_UTC.toMillis()/1000) + ":t>" + " " + 
-                            "**" + response.Team1 + "**" + 
+                            "<t:" + Math.floor(response.DateTime_UTC.toMillis()/1000) + ":R>" + " " + 
+                            response.Team1 + 
                             " vs " + 
-                            "**" + response.Team2 + "**" +
+                            response.Team2 + 
                             "\n" 
 
                             return nextGameString
