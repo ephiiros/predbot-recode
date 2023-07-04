@@ -52,9 +52,9 @@ module.exports = {
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
-                item.push(dcuser.displayName)
-                if(dcuser.displayName.length > longestName) {
-                    longestName = dcuser.displayName.length
+                item.push(dcuser.globalName)
+                if(dcuser.globalName.length > longestName) {
+                    longestName = dcuser.globalName.length
                 }
             }
         }
