@@ -40,7 +40,6 @@ module.exports = {
             return second[1] - first[1];
         });
 
-        console.log(items)
 
         let leaderboardString = token + '\n\`\`\`\n'
 
@@ -52,7 +51,7 @@ module.exports = {
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
-                console.log(dcuser)
+                console.log(dcuser.user.username)
                 console.log(dcuser.username)
                 item.push(dcuser.username)
                 if(dcuser.username.length > longestName) {
