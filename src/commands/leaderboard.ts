@@ -53,6 +53,7 @@ module.exports = {
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
                 console.log(dcuser)
+                console.log(dcuser.username)
                 item.push(dcuser.username)
                 if(dcuser.username.length > longestName) {
                     longestName = dcuser.username.length
