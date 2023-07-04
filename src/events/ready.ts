@@ -40,7 +40,7 @@ async function readyEvent(client: Client) {
                                     game.Team1 + 
                                     " vs " + 
                                     game.Team2 + 
-                                    "~~\n" 
+                                    "\n" 
                                     newResponse.push(game)
                                 }
                             })
