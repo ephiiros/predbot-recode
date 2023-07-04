@@ -44,7 +44,6 @@ module.exports = {
 
         let leaderboardString = token + '\n\`\`\`\n'
 
-        let nameArray = {}
         let longestName = 0
 
         for await (let item of items) {
@@ -53,20 +52,17 @@ module.exports = {
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
-                //nameArray.push([dcuser.displayName, item[1]])
+                item.push(dcuser.displayName)
                 if(dcuser.displayName.length > longestName) {
                     longestName = dcuser.displayName.length
                 }
             }
         }
 
-        console.log(nameArray)
 
-        /*
-        for (let item of nameArray) {
-            leaderboardString += item[0] + '.'.repeat(longestName-item[0].length) + item[1] + '\n'
+        for (let item of items) {
+            leaderboardString += item[2] + '.'.repeat(longestName-item[2].length) + item[1] + '\n'
         }
-        */
 
         leaderboardString += '\`\`\`'
 
