@@ -7,7 +7,8 @@ module.exports = {
 		.setDescription('leaderboard')
         .addStringOption(option => 
             option.setName('leaderboardtoken')
-                .setDescription('leaderboard name')),
+                .setDescription('leaderboard name')
+                .setRequired(true)),
 	async execute(interaction:any) {
         const result = await getUsers()
         const leaderboard: any = {}
