@@ -59,6 +59,7 @@ module.exports = {
             }
         }
 
+        console.log(items)
 
         for (let item of items) {
             leaderboardString += item[2] + '.'.repeat(longestName-item[2].length) + item[1] + '\n'
