@@ -40,10 +40,11 @@ module.exports = {
             return second[1] - first[1];
         });
 
+        console.log(items)
 
         let leaderboardString = token + '\n\`\`\`\n'
 
-        let nameArray = []
+        let nameArray = {}
         let longestName = 0
 
         for await (let item of items) {
@@ -52,7 +53,7 @@ module.exports = {
 
             if(isMember) {
                 let dcuser = await interaction.guild.members.fetch(item[0])
-                nameArray.push((dcuser.displayName, item[1]))
+                //nameArray.push([dcuser.displayName, item[1]])
                 if(dcuser.displayName.length > longestName) {
                     longestName = dcuser.displayName.length
                 }
