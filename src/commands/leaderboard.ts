@@ -62,9 +62,11 @@ module.exports = {
 
         console.log(nameArray)
 
+        /*
         for (let item of nameArray) {
             leaderboardString += item[0] + '.'.repeat(longestName-item[0].length) + item[1] + '\n'
         }
+        */
 
         leaderboardString += '\`\`\`'
 
