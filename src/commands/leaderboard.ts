@@ -4,19 +4,25 @@ import { getUsers } from "../libs/mongoWrapper";
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('leaderboard')
-		.setDescription('leaderboard'),
+		.setDescription('leaderboard')
+        .addStringOption(option => 
+            option.setName('leaderboardToken')
+                .setDescription('leaderboard name')),
 	async execute(interaction:any) {
         const result = await getUsers()
         const leaderboard: any = {}
+        const token = interaction.options.getString('leaderboardToken')
 
         //@ts-ignore
         result.forEach((user) => {
             //@ts-ignore
             user.history.forEach((vote) => {
-                if (leaderboard[user.id]) {
-                    leaderboard[user.id] += vote.points
-                } else {
-                    leaderboard[user.id] = vote.points
+                if (vote.matchId.match(token)) {
+                    if (leaderboard[user.id]) {
+                        leaderboard[user.id] += vote.points
+                    } else {
+                        leaderboard[user.id] = vote.points
+                    }
                 }
             })
         })
