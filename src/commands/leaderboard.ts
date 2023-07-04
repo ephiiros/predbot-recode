@@ -18,7 +18,7 @@ module.exports = {
         result.forEach((user) => {
             //@ts-ignore
             user.history.forEach((vote) => {
-                if (vote.matchId.match(token)) {
+                if (vote.matchId.includes(token)) {
                     if (leaderboard[user.id]) {
                         leaderboard[user.id] += vote.points
                     } else {
@@ -42,7 +42,7 @@ module.exports = {
         });
 
 
-        let leaderboardString = "\'\'\'"+ token + "\'\'\'" + '\n\`\`\`\n'
+        let leaderboardString = "\`\`\`"+ token + "\`\`\`" + '\n\`\`\`\n'
 
         let longestName = 0
 
