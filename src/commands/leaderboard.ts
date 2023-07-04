@@ -6,12 +6,12 @@ module.exports = {
 		.setName('leaderboard')
 		.setDescription('leaderboard')
         .addStringOption(option => 
-            option.setName('leaderboardToken')
+            option.setName('leaderboardtoken')
                 .setDescription('leaderboard name')),
 	async execute(interaction:any) {
         const result = await getUsers()
         const leaderboard: any = {}
-        const token = interaction.options.getString('leaderboardToken')
+        const token = interaction.options.getString('leaderboardtoken')
 
         //@ts-ignore
         result.forEach((user) => {
