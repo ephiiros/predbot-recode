@@ -41,7 +41,7 @@ module.exports = {
         });
 
 
-        let leaderboardString = token + '\n\`\`\`\n'
+        let leaderboardString = "\'\'\'"+ token + "\'\'\'" + '\n\`\`\`\n'
 
         let longestName = 0
 
@@ -57,8 +57,6 @@ module.exports = {
                 }
             }
         }
-
-        console.log(items)
 
         for (let item of items) {
             leaderboardString += item[2] + '.'.repeat(longestName-item[2].length+2) + item[1] + '\n'
