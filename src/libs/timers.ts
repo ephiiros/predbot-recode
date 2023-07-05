@@ -152,46 +152,36 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         // title card
         await messageList[0].edit(messageList[0].cleanContent + " LOCKED") 
         // 2-0
-        await messageList[1].edit(messageList[1].cleanContent + " LOCKED count:"
-        + await messageList[1].reactions.resolve("✅")?.count) 
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
-
         const ids20:string[] = [] 
-
         //@ts-ignore
         users20.forEach(user => {
             if (!user.bot) {
                 ids20.push(user.id)
             }
         })
+        await messageList[1].edit(messageList[1].cleanContent + " LOCKED count:"
+        + ids20.length) 
 
         bo3Message.vote20 = ids20
             
         // 2-1
-        await messageList[2].edit(messageList[2].cleanContent + " LOCKED count: "
-        + await messageList[2].reactions.resolve("✅")?.count) 
-
         const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
-
         const ids21:string[] = [] 
-
         //@ts-ignore
         users21.forEach(user => {
             if (!user.bot) {
                 ids21.push(user.id)
             }
         })
+        await messageList[2].edit(messageList[2].cleanContent + " LOCKED count: "
+        + ids21.length) 
 
         bo3Message.vote21 = ids21
 
         // 1-2
-        await messageList[3].edit(messageList[3].cleanContent + " LOCKED count:"
-        + await messageList[3].reactions.resolve("✅")?.count) 
-
         const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
-
         const ids12:string[] = [] 
-
         //@ts-ignore
         users12.forEach(user => {
             if (!user.bot) {
@@ -199,22 +189,22 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
             }
         })
 
+        await messageList[3].edit(messageList[3].cleanContent + " LOCKED count:"
+        + ids12.length)
+
         bo3Message.vote12 = ids12
 
         // 0-2
-        await messageList[4].edit(messageList[4].cleanContent + " LOCKED count:" 
-        + await messageList[4].reactions.resolve("✅")?.count) 
-
         const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
-
         const ids02:string[] = [] 
-
         //@ts-ignore
         users02.forEach(user => {
             if (!user.bot) {
                 ids02.push(user.id)
             }
         })
+        await messageList[4].edit(messageList[4].cleanContent + " LOCKED count:" 
+        + ids02.length)
 
         bo3Message.vote02 = ids02
 
