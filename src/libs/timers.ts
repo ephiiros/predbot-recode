@@ -7,7 +7,7 @@ import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, writeM
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId + "] sendVoteMessages")
 
-    channel.send("**VOTEVOTEVOTEVOTEVOTE**")
+    channel.send("## VOTING TIME ")
 
     for (const game of games) {
         switch(game.BestOf) {
@@ -149,8 +149,6 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
             messageList.push(await channel.messages.fetch(msgId))
         }
 
-        // title card
-        await messageList[0].edit(messageList[0].cleanContent + " LOCKED") 
         // 2-0
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
         const ids20:string[] = [] 
@@ -208,11 +206,19 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
         bo3Message.vote02 = ids02
 
-        await messageList[0].reactions.removeAll()
-        await messageList[1].reactions.removeAll()
-        await messageList[2].reactions.removeAll()
-        await messageList[3].reactions.removeAll()
-        await messageList[4].reactions.removeAll()
+        // title card
+        await messageList[0].edit(messageList[0].cleanContent + "\n" +
+        "```" +
+        "2-0" + "█".repeat(ids20.length) + " " + ids20.length + "\n" + 
+        "2-1" + "█".repeat(ids21.length) + " " + ids21.length +"\n" + 
+        "1-2" + "█".repeat(ids12.length) + " " + ids12.length +"\n" + 
+        "0-2" + "█".repeat(ids02.length) + " " + ids02.length +"```")
+
+        await messageList[0].delete()
+        await messageList[1].delete()
+        await messageList[2].delete()
+        await messageList[3].delete()
+        await messageList[4].delete()
 
         lockMatch(bo3Message, channel.guildId)
 
@@ -224,7 +230,9 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 }
 
 export async function countPoints (matchId:string, channel: TextChannel) {
-    console.log("[" + DateTime.now().toFormat("HH:mm") + "] [" + channel.guildId +  "] countPoints")
+    console.log("[" + DateTime.now().toFormat("HH:mm") + 
+    "] [" + channel.guildId +  "] countPoints " + matchId)
+
     const match = await findMatchMessage(matchId, channel.guildId) as unknown as Bo1Message | Bo3Message
     const matchResult = await getMatchResult(match.matchId)
 
@@ -356,6 +364,7 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                                 points: points
                             }
                         )
+                        channel.send("points added for: " + bo3Message.matchId)
                     }
                 })
                 break

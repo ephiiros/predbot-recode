@@ -42,7 +42,7 @@ module.exports = {
         });
 
 
-        let leaderboardString = "\`\`\`"+ token + "\`\`\`" + '\n\`\`\`\n'
+        let leaderboardString = "## "+ token + '\n\`\`\`\n'
 
         let longestName = 0
 
