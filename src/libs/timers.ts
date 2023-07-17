@@ -214,7 +214,6 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         "1-2" + "█".repeat(ids12.length) + " " + ids12.length +"\n" + 
         "0-2" + "█".repeat(ids02.length) + " " + ids02.length +"```")
 
-        await messageList[0].delete()
         await messageList[1].delete()
         await messageList[2].delete()
         await messageList[3].delete()
