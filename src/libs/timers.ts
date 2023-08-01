@@ -1,4 +1,4 @@
-import { Message, TextChannel, UserFlagsBitField } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
 import { Bo1Message, Bo3Message, Bo5Message, commitVote, findMatchMessage, lockMatch, writeMessage } from "./mongoWrapper";
