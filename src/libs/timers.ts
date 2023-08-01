@@ -1,7 +1,7 @@
-import { Message, TextChannel } from "discord.js";
+import { Message, TextChannel, UserFlagsBitField } from "discord.js";
 import { DateTime } from "luxon";
 import { getMatchResult, loadGames } from "./lolFandom";
-import { Bo1Message, Bo3Message, commitVote, findMatchMessage, lockMatch, writeMessage } from "./mongoWrapper";
+import { Bo1Message, Bo3Message, Bo5Message, commitVote, findMatchMessage, lockMatch, writeMessage } from "./mongoWrapper";
 
 
 export async function sendVoteMessages(games: loadGames[], channel: TextChannel, today: DateTime) {
@@ -87,6 +87,49 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 break
             case '5':
+                let bo5Message: Bo5Message = {
+                    matchId: "",
+                    serverId: channel.guildId,
+                    ids: [],
+                    vote30: [],
+                    vote31: [],
+                    vote32: [],
+                    vote23: [],
+                    vote13: [],
+                    vote03: []
+                }
+                bo5Message.matchId = game.MatchId
+
+                const bo5title = await channel.send(
+                    game.DateTime_UTC.toFormat("HH:mm") + 
+                    " " +
+                    game.Team1 + 
+                    " vs " + 
+                    game.Team2)
+
+                bo5Message.ids.push(bo5title.id)
+
+                const msg30 = await channel.send("3 - 0")
+                msg30.react("✅")
+                bo5Message.ids.push(msg30.id)
+                const msg31 = await channel.send("3 - 1")
+                msg31.react("✅")
+                bo5Message.ids.push(msg31.id)
+                const msg32 = await channel.send("3 - 2")
+                msg32.react("✅")
+                bo5Message.ids.push(msg32.id)
+                const msg23 = await channel.send("2 - 3")
+                msg23.react("✅")
+                bo5Message.ids.push(msg23.id)
+                const msg13 = await channel.send("1 - 3")
+                msg13.react("✅")
+                bo5Message.ids.push(msg13.id)
+                const msg03 = await channel.send("0 - 3")
+                msg03.react("✅")
+                bo5Message.ids.push(msg03.id)
+
+                writeMessage(bo5Message, channel.guildId)
+
                 break
         }
     }
@@ -152,51 +195,37 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         // 2-0
         const users20 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
         const ids20:string[] = [] 
-        //@ts-ignore
-        users20.forEach(user => {
+        users20?.forEach(user => {
             if (!user.bot) {
                 ids20.push(user.id)
             }
         })
-        await messageList[1].edit(messageList[1].cleanContent + " LOCKED count:"
-        + ids20.length) 
-
         bo3Message.vote20 = ids20
             
         // 2-1
         const users21 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
         const ids21:string[] = [] 
-        //@ts-ignore
-        users21.forEach(user => {
+        users21?.forEach(user => {
             if (!user.bot) {
                 ids21.push(user.id)
             }
         })
-        await messageList[2].edit(messageList[2].cleanContent + " LOCKED count: "
-        + ids21.length) 
-
         bo3Message.vote21 = ids21
 
         // 1-2
         const users12 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
         const ids12:string[] = [] 
-        //@ts-ignore
-        users12.forEach(user => {
+        users12?.forEach(user => {
             if (!user.bot) {
                 ids12.push(user.id)
             }
         })
-
-        await messageList[3].edit(messageList[3].cleanContent + " LOCKED count:"
-        + ids12.length)
-
         bo3Message.vote12 = ids12
 
         // 0-2
         const users02 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
         const ids02:string[] = [] 
-        //@ts-ignore
-        users02.forEach(user => {
+        users02?.forEach(user => {
             if (!user.bot) {
                 ids02.push(user.id)
             }
@@ -224,6 +253,86 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         setTimeout(countPoints, 
             3600000, //1 hour
             bo3Message.matchId,
+            channel)
+    } else if (idsLen == 7) {
+        let messageList:Message[] = []
+        const bo5Message = match as unknown as Bo5Message
+
+        for (const msgId of bo5Message.ids) {
+            messageList.push(await channel.messages.fetch(msgId))
+        }
+
+        // 3-0
+        const users30 = await messageList[1].reactions.resolve("✅")?.users.fetch() 
+        const ids30:string[] = []
+        users30?.forEach(user => {
+            if (!user.bot) {
+                ids30.push(user.id)
+            }
+        })
+        // 3-1
+        const users31 = await messageList[2].reactions.resolve("✅")?.users.fetch() 
+        const ids31:string[] = []
+        users31?.forEach(user => {
+            if (!user.bot) {
+                ids31.push(user.id)
+            }
+        })
+        // 3-2
+        const users32 = await messageList[3].reactions.resolve("✅")?.users.fetch() 
+        const ids32:string[] = []
+        users32?.forEach(user => {
+            if (!user.bot) {
+                ids32.push(user.id)
+            }
+        })
+        // 2-3
+        const users23 = await messageList[4].reactions.resolve("✅")?.users.fetch() 
+        const ids23:string[] = []
+        users23?.forEach(user => {
+            if (!user.bot) {
+                ids23.push(user.id)
+            }
+        })
+        // 1-3
+        const users13 = await messageList[5].reactions.resolve("✅")?.users.fetch() 
+        const ids13:string[] = []
+        users13?.forEach(user => {
+            if (!user.bot) {
+                ids13.push(user.id)
+            }
+        })
+        // 0-3
+        const users03 = await messageList[6].reactions.resolve("✅")?.users.fetch() 
+        const ids03:string[] = []
+        users03?.forEach(user => {
+            if (!user.bot) {
+                ids03.push(user.id)
+            }
+        })
+
+        bo5Message.vote30 = ids30
+        bo5Message.vote31 = ids31
+        bo5Message.vote32 = ids32
+        bo5Message.vote23 = ids23
+        bo5Message.vote13 = ids13
+        bo5Message.vote03 = ids03
+
+        await messageList[0].edit(messageList[0].cleanContent + "\n" +
+        "```" +
+        "3-0" + "█".repeat(ids30.length) + " " + ids30.length + "\n" + 
+        "3-1" + "█".repeat(ids31.length) + " " + ids31.length + "\n" + 
+        "3-2" + "█".repeat(ids32.length) + " " + ids32.length + "\n" + 
+        "2-3" + "█".repeat(ids23.length) + " " + ids23.length + "\n" + 
+        "1-3" + "█".repeat(ids13.length) + " " + ids13.length + "\n" + 
+        "0-3" + "█".repeat(ids03.length) + " " + ids03.length + "\n" + 
+        "```")
+
+        lockMatch(bo5Message, channel.guildId)
+
+        setTimeout(countPoints,
+            3600000,
+            bo5Message.matchId,
             channel)
     }
 }
@@ -364,6 +473,77 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                             }
                         )
                         channel.send("points added for: " + bo3Message.matchId)
+                    }
+                })
+                break
+            case '5':
+                const bo5scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
+
+                let bo5Message = match as unknown as Bo5Message
+
+                let bo5allVotes:string[] = []
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote30)
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote31)
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote32)
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote23)
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote13)
+                bo5allVotes = bo5allVotes.concat(bo5Message.vote03)
+
+                const allSet5 = new Set(bo5allVotes)
+
+                const bo5illegalIds:string[] = []
+                const bo5userCounts = {}
+
+                bo5allVotes.forEach(userId => {
+                    //@ts-ignore
+                    bo5userCounts[userId] = (bo5userCounts[userId] || 0) + 1
+                })
+
+                for (let key in bo5userCounts) {
+                    //@ts-ignore
+                    if (bo5userCounts[key] > 1) {
+                        bo5illegalIds.push(key)
+                    }
+                }
+
+                allSet5.forEach(userId => {
+                    if (!bo5illegalIds.includes(userId)) {
+                        let vote = ""
+                        let points = 0
+                        if (bo5Message.vote30.includes(userId)) { vote = "30"
+                            if (bo5scoreString == "30") {points = 5}
+                            else if (bo5scoreString == "31" || 
+                                    bo5scoreString == "32") {points = 3}
+                        } else if (bo5Message.vote31.includes(userId)) { vote = "31"
+                            if (bo5scoreString == "31") {points = 5}
+                            else if (bo5scoreString == "30" || 
+                                    bo5scoreString == "32") {points = 3}
+                        } else if (bo5Message.vote32.includes(userId)) { vote = "32"
+                            if (bo5scoreString == "32") {points = 5}
+                            else if (bo5scoreString == "30" || 
+                                    bo5scoreString == "31") {points = 3}
+                        } else if (bo5Message.vote23.includes(userId)) { vote = "23"
+                            if (bo5scoreString == "23") {points = 5}
+                            else if (bo5scoreString == "13" || 
+                                    bo5scoreString == "03") {points = 3}
+                        } else if (bo5Message.vote13.includes(userId)) { vote = "13"
+                            if (bo5scoreString == "13") {points = 5}
+                            else if (bo5scoreString == "23" || 
+                                    bo5scoreString == "03") {points = 3}
+                        } else if (bo5Message.vote03.includes(userId)) { vote = "03"
+                            if (bo5scoreString == "03") {points = 5}
+                            else if (bo5scoreString == "23" || 
+                                    bo5scoreString == "13") {points = 3}
+                        }
+                        commitVote(userId,
+                            {
+                                serverId: channel.guildId,
+                                matchId: bo5Message.matchId,
+                                vote:vote,
+                                points:points
+                            }
+                        )
+                        channel.send("points added for: " + bo5Message.matchId)
                     }
                 })
                 break

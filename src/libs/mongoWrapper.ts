@@ -36,6 +36,18 @@ export interface Bo3Message {
     vote02: string[]
 }
 
+export interface Bo5Message {
+    matchId: string,
+    serverId: string,
+    ids: string[],
+    vote30: string[],
+    vote31: string[],
+    vote32: string[],
+    vote23: string[],
+    vote13: string[],
+    vote03: string[]
+}
+
 export interface User {
     id: string,
     history: Match[],
@@ -133,7 +145,7 @@ export async function getServers(): Promise<Server[]>  {
 }
 
 
-export async function writeMessage(message: Bo3Message | Bo1Message, serverId: string) {
+export async function writeMessage(message: Bo5Message | Bo3Message | Bo1Message, serverId: string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
@@ -162,12 +174,25 @@ export async function writeMessage(message: Bo3Message | Bo1Message, serverId: s
             "vote12": bo3Message.vote12,
             "vote02": bo3Message.vote02
         })
+    } else if (message.ids.length == 7) {
+        const bo5Message = message as Bo5Message
 
+        await messages.insertOne({
+            "serverId": serverId,
+            "matchId": bo5Message.matchId,
+            "ids": bo5Message.ids,
+            "vote30": bo5Message.vote30,
+            "vote31": bo5Message.vote31,
+            "vote32": bo5Message.vote32,
+            "vote23": bo5Message.vote23,
+            "vote13": bo5Message.vote13,
+            "vote03": bo5Message.vote03
+        })
     }
     client.close()
 }
 
-export async function lockMatch(message:Bo1Message | Bo3Message ,serverId:string) {
+export async function lockMatch(message:Bo1Message | Bo3Message |Bo5Message ,serverId:string) {
     const uri:string = process.env.DB_CONN_STRING as string
     const client = new MongoClient(uri)
     const database = client.db("predbot")
@@ -207,7 +232,26 @@ export async function lockMatch(message:Bo1Message | Bo3Message ,serverId:string
                 "vote02": bo3Message.vote02,
             }
         )
+    } else if (message.ids.length == 7) {
+        const bo5Message = message as Bo5Message
+        await messages.replaceOne(
+            {
+                "serverId": serverId,
+                "matchId": bo5Message.matchId
 
+            },
+            {
+                "serverId": serverId,
+                "matchId": bo5Message.matchId,
+                "ids": bo5Message.ids,
+                "vote30": bo5Message.vote30,
+                "vote31": bo5Message.vote31,
+                "vote32": bo5Message.vote32,
+                "vote23": bo5Message.vote23,
+                "vote13": bo5Message.vote13,
+                "vote03": bo5Message.vote03,
+            }
+        )
     }
     client.close()
 
