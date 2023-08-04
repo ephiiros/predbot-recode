@@ -130,6 +130,11 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeMessage(bo5Message, channel.guildId)
 
+                setTimeout(lockVotes, 
+                    game.DateTime_UTC.diff(today).milliseconds, 
+                    bo5Message.matchId, 
+                    channel)
+
                 break
         }
     }
@@ -238,10 +243,10 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         // title card
         await messageList[0].edit(messageList[0].cleanContent + "\n" +
         "```" +
-        "2-0" + "█".repeat(ids20.length) + " " + ids20.length + "\n" + 
-        "2-1" + "█".repeat(ids21.length) + " " + ids21.length +"\n" + 
-        "1-2" + "█".repeat(ids12.length) + " " + ids12.length +"\n" + 
-        "0-2" + "█".repeat(ids02.length) + " " + ids02.length +"```")
+        "2-0 " + "█".repeat(ids20.length) + " " + ids20.length + "\n" + 
+        "2-1 " + "█".repeat(ids21.length) + " " + ids21.length +"\n" + 
+        "1-2 " + "█".repeat(ids12.length) + " " + ids12.length +"\n" + 
+        "0-2 " + "█".repeat(ids02.length) + " " + ids02.length +"```")
 
         await messageList[1].delete()
         await messageList[2].delete()
@@ -320,12 +325,12 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
 
         await messageList[0].edit(messageList[0].cleanContent + "\n" +
         "```" +
-        "3-0" + "█".repeat(ids30.length) + " " + ids30.length + "\n" + 
-        "3-1" + "█".repeat(ids31.length) + " " + ids31.length + "\n" + 
-        "3-2" + "█".repeat(ids32.length) + " " + ids32.length + "\n" + 
-        "2-3" + "█".repeat(ids23.length) + " " + ids23.length + "\n" + 
-        "1-3" + "█".repeat(ids13.length) + " " + ids13.length + "\n" + 
-        "0-3" + "█".repeat(ids03.length) + " " + ids03.length + "\n" + 
+        "3-0 " + "█".repeat(ids30.length) + " " + ids30.length + "\n" + 
+        "3-1 " + "█".repeat(ids31.length) + " " + ids31.length + "\n" + 
+        "3-2 " + "█".repeat(ids32.length) + " " + ids32.length + "\n" + 
+        "2-3 " + "█".repeat(ids23.length) + " " + ids23.length + "\n" + 
+        "1-3 " + "█".repeat(ids13.length) + " " + ids13.length + "\n" + 
+        "0-3 " + "█".repeat(ids03.length) + " " + ids03.length + "\n" + 
         "```")
 
         lockMatch(bo5Message, channel.guildId)

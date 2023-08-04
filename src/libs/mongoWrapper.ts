@@ -61,9 +61,18 @@ export interface Match {
     points: string
 }
 
+let connection: MongoClient | null = null
+
+function getConnection() {
+    if (connection == null) {
+        const uri:string = process.env.DB_CONN_STRING as string
+        connection = new MongoClient(uri)
+    }
+    return connection
+}
+
 export async function updateServerChannel (serverId:string, channelId:TextChannel) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const servers = database.collection("servers")
 
@@ -77,12 +86,10 @@ export async function updateServerChannel (serverId:string, channelId:TextChanne
             }
         }
     )
-    client.close()
 }
 
 export async function updateServerLeague (serverId: string, leagues: string[]) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const servers = database.collection("servers")
 
@@ -96,12 +103,10 @@ export async function updateServerLeague (serverId: string, leagues: string[]) {
             }
         }
     )
-    client.close()
 }
 
 export async function addServer (server: Server) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const servers = database.collection("servers")
 
@@ -119,12 +124,10 @@ export async function addServer (server: Server) {
         })
         console.log(result)
     }
-    client.close()
 }
 
 export async function getServers(): Promise<Server[]>  {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const servers = database.collection("servers")
 
@@ -139,15 +142,12 @@ export async function getServers(): Promise<Server[]>  {
         })
         
     });
-    client.close()
     return serverList as Server[]
-
 }
 
 
 export async function writeMessage(message: Bo5Message | Bo3Message | Bo1Message, serverId: string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
@@ -189,12 +189,10 @@ export async function writeMessage(message: Bo5Message | Bo3Message | Bo1Message
             "vote03": bo5Message.vote03
         })
     }
-    client.close()
 }
 
 export async function lockMatch(message:Bo1Message | Bo3Message |Bo5Message ,serverId:string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
@@ -253,13 +251,10 @@ export async function lockMatch(message:Bo1Message | Bo3Message |Bo5Message ,ser
             }
         )
     }
-    client.close()
-
 }
 
 export async function findMatchMessage(matchId: string, serverId: string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const messages = database.collection("messages")
 
@@ -270,14 +265,12 @@ export async function findMatchMessage(matchId: string, serverId: string) {
             "matchId": matchId
         }
     ) 
-    client.close()
 
     return result
 }
 
 export async function commitVote(userId:string, vote:Object) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const users = database.collection("users")
 
@@ -292,25 +285,21 @@ export async function commitVote(userId:string, vote:Object) {
             upsert: true
         }
     )
-    client.close()
 }
 
 export async function getUsers() {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const users = database.collection("users")
 
     const cursor = await users.find({})
     const result = await cursor.toArray()
 
-    client.close()
     return result
 }
 
 export async function getHistory(userId:string) {
-    const uri:string = process.env.DB_CONN_STRING as string
-    const client = new MongoClient(uri)
+    const client = getConnection()
     const database = client.db("predbot")
     const users = database.collection("users")
 
@@ -320,6 +309,5 @@ export async function getHistory(userId:string) {
         }
     )
 
-    client.close()
     return result
 }
