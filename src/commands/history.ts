@@ -7,11 +7,8 @@ module.exports = {
 		.setDescription('history'),
 	async execute(interaction:any) {
         const history = await getHistory(interaction.member.id)
-
         let interactionString = '\n'
-
         let page = 0
-
         for (let i = page*5; i < page*5 + 5; i ++) {
             interactionString += history[i].matchId +"\n"
         }
@@ -29,15 +26,27 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(left, right)
 
-        console.log(row)
-
-        //@ts-ignore
-		const response = await interaction.reply({
-            content: interactionString,
+		await interaction.reply({
+            content: "test",
             componenets: [row]
         });
 
-        console.log(response)
+	},
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /*
         //@ts-ignore
@@ -77,5 +86,3 @@ module.exports = {
             });
         }
     */
-	},
-}
