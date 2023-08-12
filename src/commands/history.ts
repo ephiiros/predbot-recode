@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder, User } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
 import { getHistory } from "../libs/mongoWrapper";
 
 module.exports = {
