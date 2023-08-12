@@ -1,31 +1,31 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
-import { getHistory } from "../libs/mongoWrapper";
+//import { getHistory } from "../libs/mongoWrapper";
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('history')
 		.setDescription('history'),
 	async execute(interaction:any) {
-        const history = await getHistory(interaction.member.id)
+        //const history = await getHistory(interaction.member.id)
         //@ts-ignore
-        let interactionString = '\n'
-        let page = 0
-        for (let i = page*5; i < page*5 + 5; i ++) {
-            interactionString += history[i].matchId +"\n"
-        }
+        //let interactionString = '\n'
+        //let page = 0
+        //for (let i = page*5; i < page*5 + 5; i ++){
+        //    interactionString += history[i].matchId +"\n"
+        //}
 
-        const left = new ButtonBuilder()
-            .setCustomId('left')
-            .setLabel('<')
-            .setStyle(ButtonStyle.Primary)
+		const confirm = new ButtonBuilder()
+			.setCustomId('confirm')
+			.setLabel('Confirm Ban')
+			.setStyle(ButtonStyle.Danger);
 
-        const right = new ButtonBuilder()
-            .setCustomId('right')
-            .setLabel('>')
-            .setStyle(ButtonStyle.Primary)
+		const cancel = new ButtonBuilder()
+			.setCustomId('cancel')
+			.setLabel('Cancel')
+			.setStyle(ButtonStyle.Secondary);
 
-        const row = new ActionRowBuilder()
-            .addComponents(left, right)
+		const row = new ActionRowBuilder()
+			.addComponents(cancel, confirm);
 
 		await interaction.reply({
             content: "test",
