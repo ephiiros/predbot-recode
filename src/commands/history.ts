@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
 import { getHistory } from "../libs/mongoWrapper";
 
 module.exports = {
@@ -19,10 +19,12 @@ module.exports = {
         const left = new ButtonBuilder()
             .setCustomId("left")
             .setLabel("<")
+            .setStyle(ButtonStyle.Primary)
 
         const right = new ButtonBuilder()
             .setCustomId("right")
             .setLabel(">")
+            .setStyle(ButtonStyle.Primary)
 
         const row = new ActionRowBuilder()
         .addComponents(left, right)
