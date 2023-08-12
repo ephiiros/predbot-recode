@@ -29,11 +29,15 @@ module.exports = {
         const row = new ActionRowBuilder()
             .addComponents(left, right)
 
+        console.log(row)
+
         //@ts-ignore
 		const response = await interaction.reply({
             content: interactionString,
             componenets: [row]
         });
+
+        console.log(response)
 
         /*
         //@ts-ignore
