@@ -7,6 +7,7 @@ module.exports = {
 		.setDescription('history'),
 	async execute(interaction:any) {
         const history = await getHistory(interaction.member.id)
+        //@ts-ignore
         let interactionString = '\n'
         let page = 0
         for (let i = page*5; i < page*5 + 5; i ++) {
