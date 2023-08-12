@@ -17,23 +17,25 @@ module.exports = {
         }
 
         const left = new ButtonBuilder()
-            .setCustomId("left")
-            .setLabel("<")
+            .setCustomId('left')
+            .setLabel('<')
             .setStyle(ButtonStyle.Primary)
 
         const right = new ButtonBuilder()
-            .setCustomId("right")
-            .setLabel(">")
+            .setCustomId('right')
+            .setLabel('>')
             .setStyle(ButtonStyle.Primary)
 
         const row = new ActionRowBuilder()
-        .addComponents(left, right)
+            .addComponents(left, right)
 
+        //@ts-ignore
 		const response = await interaction.reply({
             content: interactionString,
             componenets: [row]
         });
 
+        /*
         //@ts-ignore
         const collectorFilter = i => i.user.id === interaction.user.id;
 
@@ -70,5 +72,6 @@ module.exports = {
                 components: [] 
             });
         }
+    */
 	},
 }
