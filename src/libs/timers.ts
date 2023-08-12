@@ -333,6 +333,13 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         "0-3 " + "█".repeat(ids03.length) + " " + ids03.length + "\n" + 
         "```")
 
+        await messageList[1].delete()
+        await messageList[2].delete()
+        await messageList[3].delete()
+        await messageList[4].delete()
+        await messageList[5].delete()
+        await messageList[6].delete()
+
         lockMatch(bo5Message, channel.guildId)
 
         setTimeout(countPoints,

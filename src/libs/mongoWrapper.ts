@@ -309,5 +309,6 @@ export async function getHistory(userId:string) {
         }
     )
 
-    return result
+    //@ts-ignore
+    return result.history
 }
