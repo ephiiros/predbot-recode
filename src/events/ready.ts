@@ -125,7 +125,7 @@ module.exports = {
             })
             return servers
         }).then(() => {
-            //readyEvent(client)
+            readyEvent(client)
 
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
