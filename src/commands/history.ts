@@ -16,18 +16,20 @@ module.exports = {
             interactionString += history[i].matchId +"\n"
         }
 
+        //@ts-ignore
         const left = new ButtonBuilder()
             .setCustomId('left')
             .setLabel('<')
             .setStyle(ButtonStyle.Primary)
 
+            //@ts-ignore
         const right = new ButtonBuilder()
             .setCustomId('right')
             .setLabel('>')
             .setStyle(ButtonStyle.Primary)
 
         const row = new ActionRowBuilder()
-            .addComponents(left, right)
+            //.addComponents(left, right)
 
 		const response = await interaction.reply({
             content: interactionString,
