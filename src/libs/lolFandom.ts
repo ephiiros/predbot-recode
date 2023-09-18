@@ -92,6 +92,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
   const response = await fetch(url)
   const responseJson:lolFandomResponse = await response.json()
 
+  console.log(url)
   console.log(responseJson.cargoquery)
 
   let result: loadGames 
