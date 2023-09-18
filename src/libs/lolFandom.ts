@@ -92,6 +92,8 @@ export async function getNextGame(leagues: string[], date: DateTime) {
   const response = await fetch(url)
   const responseJson:lolFandomResponse = await response.json()
 
+  console.log(responseJson.cargoquery)
+
   let result: loadGames 
   result= {
     MatchId: responseJson.cargoquery[0].title.MatchId,
@@ -100,6 +102,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
     Team2: responseJson.cargoquery[0].title.Team2,
     BestOf: responseJson.cargoquery[0].title.BestOf
   }
+
 
   return result
 }
