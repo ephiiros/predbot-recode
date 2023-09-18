@@ -95,17 +95,21 @@ export async function getNextGame(leagues: string[], date: DateTime) {
   console.log(url)
   console.log(responseJson.cargoquery)
 
-  let result: loadGames 
-  result= {
-    MatchId: responseJson.cargoquery[0].title.MatchId,
-    DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
-    Team1: responseJson.cargoquery[0].title.Team1,
-    Team2: responseJson.cargoquery[0].title.Team2,
-    BestOf: responseJson.cargoquery[0].title.BestOf
+  if (responseJson.cargoquery.length > 0) {
+    let result: loadGames 
+    result= {
+      MatchId: responseJson.cargoquery[0].title.MatchId,
+      DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[0].title["DateTime UTC"]),
+      Team1: responseJson.cargoquery[0].title.Team1,
+      Team2: responseJson.cargoquery[0].title.Team2,
+      BestOf: responseJson.cargoquery[0].title.BestOf
+    }
+
+
+    return result
+  } else {
+    return null
   }
-
-
-  return result
 }
 
 export async function getMatchResult(matchId: string) {

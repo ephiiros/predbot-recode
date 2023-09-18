@@ -62,16 +62,20 @@ async function readyEvent(client: Client) {
                         })
 
                         const nextGame = getNextGame(server.leagues, today)
-                        .then((response: loadGames) => {
-                            let nextGameString = ""
-                            nextGameString += 
-                            "<t:" + Math.floor(response.DateTime_UTC.toMillis()/1000) + ":R>" + " " + 
-                            response.Team1 + 
-                            " vs " + 
-                            response.Team2 + 
-                            "\n" 
+                        .then((response: loadGames | null) => {
+                            if (response) {
+                                let nextGameString = ""
+                                nextGameString += 
+                                "<t:" + Math.floor(response.DateTime_UTC.toMillis()/1000) + ":R>" + " " + 
+                                response.Team1 + 
+                                " vs " + 
+                                response.Team2 + 
+                                "\n" 
 
-                            return nextGameString
+                                return nextGameString
+                            } else {
+                                return " "
+                            }
                         })
 
                         Promise.all([todayGames, tomorrowGames, nextGame]).then((values) => {
