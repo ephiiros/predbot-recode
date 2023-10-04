@@ -27,7 +27,7 @@ export async function getDayGames(leagues: string[], day: DateTime) {
   let leagueQuery = ` AND (MatchId LIKE '${leagues[0]}/%'` 
   if (leagues.length > 1) {
     for (let i = 1; i < leagues.length; i++) {
-        leagueQuery += `OR MatchId LIKE '${leagues[i]}/%'`
+        leagueQuery += `OR MatchId LIKE '${leagues[i]}%'`
     }
   }
   leagueQuery += ")"
@@ -70,7 +70,7 @@ export async function getNextGame(leagues: string[], date: DateTime) {
   let leagueQuery = ` AND (MatchId LIKE '${leagues[0]}/%'` 
   if (leagues.length > 1) {
     for (let i = 1; i < leagues.length; i++) {
-        leagueQuery += `OR MatchId LIKE '${leagues[i]}/%'`
+        leagueQuery += `OR MatchId LIKE '${leagues[i]}%'`
     }
   }
   leagueQuery += ")"
