@@ -5,7 +5,8 @@ import cron from "node-cron";
 import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
 import { sendVoteMessages } from "../libs/timers";
 
-Settings.defaultZone = "utc";
+//Settings.defaultZone = "utc";
+Settings.defaultZone = "kst";
 
 async function readyEvent(client: Client) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [Server] Creating daily schedule")
@@ -14,7 +15,8 @@ async function readyEvent(client: Client) {
                 if (server.channel != null) {
                     console.log("["+ server.id +"] Scheduled Message")
                     const channel = client.channels.cache.get(server.channel) as TextChannel
-                    let today = DateTime.local().setZone('utc')
+                    //let today = DateTime.local().setZone('utc')
+                    let today = DateTime.local().setZone('kst')
                     //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                     if (server.leagues == null) {
@@ -133,7 +135,7 @@ module.exports = {
 
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            cron.schedule('0 1 * * * ', () => {
+            cron.schedule('0 0 * * * ', () => {
                 readyEvent(client)
             })
         })
