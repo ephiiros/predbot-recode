@@ -8,6 +8,7 @@ import { sendVoteMessages } from "../libs/timers";
 //Settings.defaultZone = "utc";
 Settings.defaultZone = "UTC+7";
 
+//@ts-ignore
 async function readyEvent(client: Client) {
     console.log("[" + DateTime.now().toFormat("HH:mm") + "] [Server] Creating daily schedule")
         getServers().then((servers) => {
