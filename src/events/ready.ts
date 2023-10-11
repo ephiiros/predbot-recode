@@ -136,7 +136,8 @@ module.exports = {
 
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            cron.schedule('20 12 * * * ', () => {
+            cron.schedule('* * * * * ', () => {
+                console.log(DateTime.local())
                 //readyEvent(client)
             })
         })
