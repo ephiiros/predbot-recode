@@ -32,8 +32,8 @@ export async function getDayGames(leagues: string[], day: DateTime) {
   }
   leagueQuery += ")"
 
-  const before = day.setZone('UTC').set({ hour: 0, minute: 0, second: 0, millisecond: 0})
-  const after = day.setZone('UTC').plus({days:1})
+  const before = day.set({ hour: 0, minute: 0, second: 0, millisecond: 0})
+  const after = day.plus({days:1})
   const params = new URLSearchParams({
     action: "cargoquery",
     format: "json",
@@ -56,7 +56,7 @@ export async function getDayGames(leagues: string[], day: DateTime) {
   for (var key in responseJson.cargoquery) {
     result.push({
       MatchId: responseJson.cargoquery[key].title.MatchId,
-      DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[key].title["DateTime UTC"]),
+      DateTime_UTC: DateTime.fromSQL(responseJson.cargoquery[key].title["DateTime UTC"], {zone: 'UTC'}),
       Team1: responseJson.cargoquery[key].title.Team1,
       Team2: responseJson.cargoquery[key].title.Team2,
       BestOf: responseJson.cargoquery[key].title.BestOf
