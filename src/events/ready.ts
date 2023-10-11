@@ -132,14 +132,14 @@ module.exports = {
             })
             return servers
         }).then(() => {
-            //readyEvent(client)
+            readyEvent(client)
 
             // every 24 hours 0 0 * * * 
             // every minute * * * * * 
-            // 20 -> 12
-            cron.schedule('* 11 * * * ', () => {
-                console.log(DateTime.local())
-                //readyEvent(client)
+            // 11 -> 12
+            // 19 20
+            cron.schedule('0 19 * * * ', () => {
+                readyEvent(client)
             })
         })
     }
