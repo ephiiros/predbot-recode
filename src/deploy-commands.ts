@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config()
 
 const clientId = process.env.DISCORD_CLIENT_ID as string
-const guildIds = ["976555527247106099", "859795735360307210"]
+const guildIds = ["976555527247106099", "859795735360307210", "207209418906009602"]
 const token = process.env.DISCORD_TOKEN as string
 
 guildIds.forEach(guildId => {
