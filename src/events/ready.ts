@@ -16,8 +16,8 @@ async function readyEvent(client: Client) {
                 if (server.channel != null) {
                     console.log("["+ server.id +"] Scheduled Message")
                     const channel = client.channels.cache.get(server.channel) as TextChannel
-                    //let today = DateTime.local().setZone('utc')
-                    let today = DateTime.local().setZone('UTC+9')
+                    let today = DateTime.local().setZone('utc')
+                    //let today = DateTime.local().setZone('UTC+9')
                     //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                     if (server.leagues == null) {
