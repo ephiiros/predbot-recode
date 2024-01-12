@@ -60,7 +60,7 @@ module.exports = {
         }
 
         for (let item of items) {
-            if (item.length < 3) {
+            if (item.length > 2) {
                 console.log(item)
                 leaderboardString += item[2] + '.'.repeat(longestName-item[2].length+2) + item[1] + '\n'
             }
