@@ -18,11 +18,13 @@ module.exports = {
         result.forEach((user) => {
             //@ts-ignore
             user.history.forEach((vote) => {
-                if (vote.matchId.includes(token)) {
-                    if (leaderboard[user.id]) {
-                        leaderboard[user.id] += vote.points
-                    } else {
-                        leaderboard[user.id] = vote.points
+                if (vote.serverId == interaction.guild.id) {
+                    if (vote.matchId.includes(token)) {
+                        if (leaderboard[user.id]) {
+                            leaderboard[user.id] += vote.points
+                        } else {
+                            leaderboard[user.id] = vote.points
+                        }
                     }
                 }
             })
