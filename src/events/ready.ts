@@ -5,8 +5,8 @@ import cron from "node-cron";
 import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
 import { sendVoteMessages } from "../libs/timers";
 
-//Settings.defaultZone = "utc";
-Settings.defaultZone = "UTC+9";
+Settings.defaultZone = "utc";
+//Settings.defaultZone = "UTC+9";
 
 //@ts-ignore
 async function readyEvent(client: Client) {
@@ -138,7 +138,7 @@ module.exports = {
             // every minute * * * * * 
             // 11 -> 12
             // 19 20
-            cron.schedule('0 19 * * * ', () => {
+            cron.schedule('0 2 * * * ', () => {
                 readyEvent(client)
             })
         })
