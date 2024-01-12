@@ -10,7 +10,7 @@ module.exports = {
                 .setDescription('leaderboard name')
                 .setRequired(true)),
 	async execute(interaction:any) {
-        const result = await getUsers()
+        const result = await ()
         const leaderboard: any = {}
         const token = interaction.options.getString('leaderboardtoken')
 
@@ -60,6 +60,7 @@ module.exports = {
         }
 
         for (let item of items) {
+            console.log(item)
             leaderboardString += item[2] + '.'.repeat(longestName-item[2].length+2) + item[1] + '\n'
         }
 
