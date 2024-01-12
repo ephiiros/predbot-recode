@@ -113,7 +113,6 @@ async function readyEvent(client: Client) {
             }}
             )
         })
-
 }
 
 module.exports = { 
