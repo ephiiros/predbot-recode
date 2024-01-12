@@ -10,7 +10,7 @@ module.exports = {
                 .setDescription('leaderboard name')
                 .setRequired(true)),
 	async execute(interaction:any) {
-        const result = await ()
+        const result = await getUsers()
         const leaderboard: any = {}
         const token = interaction.options.getString('leaderboardtoken')
 
