@@ -130,6 +130,8 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
 
                 writeMessage(bo5Message, channel.guildId)
 
+		console.log("votes lock in")
+		console.log(game.DateTime_UTC.diff(today).milliseconds)
                 setTimeout(lockVotes, 
                     game.DateTime_UTC.diff(today).milliseconds, 
                     bo5Message.matchId, 
