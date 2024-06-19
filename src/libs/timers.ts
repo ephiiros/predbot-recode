@@ -23,7 +23,7 @@ export async function sendVoteMessages(games: loadGames[], channel: TextChannel,
                 bo1Message.matchId = game.MatchId
 
                 const bo1title = await channel.send(
-                    game.DateTime_UTC.toFormat("HH:mm") + 
+                    "<t:" + Math.floor(game.DateTime_UTC.toMillis()/1000) + ":t>" + " " +
                     " " +
                     game.Team1 + 
                     " vs " + 
@@ -156,13 +156,20 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
             messageList.push(await channel.messages.fetch(msgId))
         }
 
-        await messageList[0].edit(messageList[0].cleanContent + " LOCKED")
 
         const users1 = await messageList[0].reactions.resolve("1️⃣")?.users.fetch() 
         const users2 = await messageList[0].reactions.resolve("2️⃣")?.users.fetch() 
 
         const ids1:string[] = []
         const ids2:string[] = []
+
+        await messageList[0].edit(
+            messageList[0].cleanContent + 
+            " LOCKED " + 
+            ids1.length.toString() + 
+            " - " + 
+            ids2.length.toString()
+        )
 
         //@ts-ignore
         users1.forEach(user => {
