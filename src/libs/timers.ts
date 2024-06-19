@@ -187,7 +187,7 @@ export async function lockVotes(matchId: string, channel:TextChannel ) {
         bo1Message.vote1 = ids1
         bo1Message.vote2 = ids2
 
-        await messageList[0].reactions.removeAll()
+        // await messageList[0].reactions.removeAll()
 
         lockMatch(bo1Message, channel.guildId)
 
