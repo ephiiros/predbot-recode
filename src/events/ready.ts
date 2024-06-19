@@ -6,7 +6,7 @@ import { getDayGames, getNextGame, loadGames } from "../libs/lolFandom";
 import { sendVoteMessages } from "../libs/timers";
 
 Settings.defaultZone = "utc";
-//Settings.defaultZone = "UTC+9";
+//Settings.defaultZone = "UTC+12";
 
 //@ts-ignore
 async function readyEvent(client: Client) {
@@ -17,7 +17,7 @@ async function readyEvent(client: Client) {
                     console.log("["+ server.id +"] Scheduled Message")
                     const channel = client.channels.cache.get(server.channel) as TextChannel
                     let today = DateTime.local().setZone('utc')
-                    //let today = DateTime.local().setZone('UTC+9')
+                    //let today = DateTime.local().setZone('UTC+12')
                     //const today = DateTime.fromSQL("2023-03-18 00:00:00")
 
                     if (server.leagues == null) {
