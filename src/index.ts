@@ -5,7 +5,10 @@ import fs from "fs"
 
 dotenv.config();
 
-const client = new Client({ intents: [ GatewayIntentBits.Guilds ] });
+const client = new Client({ intents: [ 
+	GatewayIntentBits.Guilds,
+	GatewayIntentBits.GuildMessages,
+] });
 
 //@ts-ignore 
 client.commands = new Collection()
