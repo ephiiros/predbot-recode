@@ -493,9 +493,15 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                                 points: points
                             }
                         )
-                        channel.send("points added for: " + bo3Message.matchId)
                     }
                 })
+
+                {
+                    const hasLegalVotes = allSet3.size > 0 && allSet3.size > illegalIds.length;
+                    if (hasLegalVotes) {
+                        channel.send("points added for: " + bo3Message.matchId)
+                    }
+                }
                 break
             case '5':
                 const bo5scoreString = matchResult.Team1Score.concat(matchResult.Team2Score)
@@ -564,9 +570,15 @@ export async function countPoints (matchId:string, channel: TextChannel) {
                                 points:points
                             }
                         )
-                        channel.send("points added for: " + bo5Message.matchId)
                     }
                 })
+
+                {
+                    const hasLegalVotes = allSet5.size > 0 && allSet5.size > bo5illegalIds.length;
+                    if (hasLegalVotes) {
+                        channel.send("points added for: " + bo5Message.matchId)
+                    }
+                }
                 break
         }
     }
